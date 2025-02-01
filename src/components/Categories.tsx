@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Lock, Star, Users, Party, Zap } from "lucide-react";
+import { Lock, Star, Users, Sparkles, Zap } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 type Category = {
@@ -26,7 +26,7 @@ const categories: Category[] = [
     name: "Parti Paketi",
     description: "Parti ortamı için özel kartlar",
     isLocked: true,
-    icon: <Party className="w-6 h-6" />,
+    icon: <Sparkles className="w-6 h-6" />,
     price: "₺29.99",
   },
   {
