@@ -1,35 +1,43 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const tasks = [
-  { type: "do", text: "En sevdiğin dansı yap" },
-  { type: "drink", text: "2 yudum iç" },
-  { type: "do", text: "Tavuk gibi ses çıkar" },
-  { type: "drink", text: "3 yudum iç" },
-  { type: "do", text: "Maymun taklidi yap" },
-  { type: "drink", text: "Shot iç" },
-  { type: "do", text: "1 dakika boyunca şarkı söyle" },
-  { type: "drink", text: "Yanındakiyle beraber için" },
-  { type: "do", text: "10 şınav çek" },
-  { type: "drink", text: "4 yudum iç" },
-  { type: "do", text: "Komik bir fıkra anlat" },
-  { type: "drink", text: "Bardağını bitir" },
-  { type: "do", text: "En kötü anını anlat" },
-  { type: "drink", text: "5 yudum iç" },
-  { type: "do", text: "1 tur boyunca aksanlı konuş" },
-  { type: "drink", text: "Herkes senin için içsin" }
-];
+const tasksByCategory = {
+  basic: [
+    { type: "do", text: "En sevdiğin dansı yap" },
+    { type: "drink", text: "2 yudum iç" },
+    { type: "do", text: "Tavuk gibi ses çıkar" },
+    { type: "drink", text: "3 yudum iç" },
+    { type: "do", text: "Maymun taklidi yap" },
+    { type: "drink", text: "Shot iç" },
+    { type: "do", text: "1 dakika boyunca şarkı söyle" },
+    { type: "drink", text: "Yanındakiyle beraber için" }
+  ],
+  party: [
+    { type: "do", text: "10 şınav çek" },
+    { type: "drink", text: "4 yudum iç" },
+    { type: "do", text: "Komik bir fıkra anlat" },
+    { type: "drink", text: "Bardağını bitir" }
+  ],
+  extreme: [
+    { type: "do", text: "En kötü anını anlat" },
+    { type: "drink", text: "5 yudum iç" },
+    { type: "do", text: "1 tur boyunca aksanlı konuş" },
+    { type: "drink", text: "Herkes senin için içsin" }
+  ]
+};
 
-export const Card = () => {
+export const Card = ({ category = "basic" }: { category?: string }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [currentTask, setCurrentTask] = useState(() => 
-    tasks[Math.floor(Math.random() * tasks.length)]
-  );
+  const [currentTask, setCurrentTask] = useState(() => {
+    const tasks = tasksByCategory[category as keyof typeof tasksByCategory] || tasksByCategory.basic;
+    return tasks[Math.floor(Math.random() * tasks.length)];
+  });
 
   const handleFlip = () => {
     if (isFlipped) {
       setIsFlipped(false);
       setTimeout(() => {
+        const tasks = tasksByCategory[category as keyof typeof tasksByCategory] || tasksByCategory.basic;
         setCurrentTask(tasks[Math.floor(Math.random() * tasks.length)]);
       }, 300);
     } else {
