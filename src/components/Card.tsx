@@ -6,7 +6,18 @@ const tasks = [
   { type: "drink", text: "2 yudum iç" },
   { type: "do", text: "Tavuk gibi ses çıkar" },
   { type: "drink", text: "3 yudum iç" },
-  // Daha fazla görev eklenebilir
+  { type: "do", text: "Maymun taklidi yap" },
+  { type: "drink", text: "Shot iç" },
+  { type: "do", text: "1 dakika boyunca şarkı söyle" },
+  { type: "drink", text: "Yanındakiyle beraber için" },
+  { type: "do", text: "10 şınav çek" },
+  { type: "drink", text: "4 yudum iç" },
+  { type: "do", text: "Komik bir fıkra anlat" },
+  { type: "drink", text: "Bardağını bitir" },
+  { type: "do", text: "En kötü anını anlat" },
+  { type: "drink", text: "5 yudum iç" },
+  { type: "do", text: "1 tur boyunca aksanlı konuş" },
+  { type: "drink", text: "Herkes senin için içsin" }
 ];
 
 export const Card = () => {
