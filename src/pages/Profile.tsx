@@ -1,11 +1,30 @@
+import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Settings, CreditCard, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getStorageData, updateSettings, isPurchased } from "@/utils/storage";
+import { categories } from "@/components/Categories";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [settings, setSettings] = useState(getStorageData().settings);
+  const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
+
+  const toggleSetting = (key: keyof typeof settings) => {
+    if (typeof settings[key] === 'boolean') {
+      const newValue = !settings[key];
+      updateSettings(key, newValue);
+      setSettings(prev => ({ ...prev, [key]: newValue }));
+    }
+  };
+
+  const changeLanguage = () => {
+    const newLang = settings.language === 'tr' ? 'en' : 'tr';
+    updateSettings('language', newLang);
+    setSettings(prev => ({ ...prev, language: newLang }));
+  };
 
   return (
     <div className="min-h-screen bg-background text-white p-4">
@@ -37,9 +56,20 @@ const Profile = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm text-gray-400">
-                Henüz satın alınmış paket bulunmuyor.
-              </div>
+              {purchasedCategories.length > 0 ? (
+                <div className="grid gap-2">
+                  {purchasedCategories.map(category => (
+                    <div key={category.id} className="flex items-center gap-2 p-2 bg-secondary/10 rounded-lg">
+                      {category.icon}
+                      <span>{category.name}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-400">
+                  Henüz satın alınmış paket bulunmuyor.
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -53,15 +83,30 @@ const Profile = () => {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
                 <span>Ses Efektleri</span>
-                <Button variant="outline">Açık</Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => toggleSetting('soundEffects')}
+                >
+                  {settings.soundEffects ? 'Açık' : 'Kapalı'}
+                </Button>
               </div>
               <div className="flex justify-between items-center">
                 <span>Bildirimler</span>
-                <Button variant="outline">Kapalı</Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => toggleSetting('notifications')}
+                >
+                  {settings.notifications ? 'Açık' : 'Kapalı'}
+                </Button>
               </div>
               <div className="flex justify-between items-center">
                 <span>Dil</span>
-                <Button variant="outline">Türkçe</Button>
+                <Button 
+                  variant="outline"
+                  onClick={changeLanguage}
+                >
+                  {settings.language === 'tr' ? 'Türkçe' : 'English'}
+                </Button>
               </div>
             </CardContent>
           </Card>
