@@ -28,9 +28,12 @@ export const setStorageData = (data: StorageData) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 };
 
-export const updateSettings = (
-  key: keyof StorageData['settings'],
-  value: StorageData['settings'][keyof StorageData['settings']]
+type SettingsKey = keyof StorageData['settings'];
+type SettingsValue<K extends SettingsKey> = StorageData['settings'][K];
+
+export const updateSettings = <K extends SettingsKey>(
+  key: K,
+  value: SettingsValue<K>
 ) => {
   const data = getStorageData();
   data.settings[key] = value;
