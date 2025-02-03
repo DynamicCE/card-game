@@ -4,11 +4,13 @@ import { Categories } from "@/components/Categories";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("basic");
+  const navigate = useNavigate();
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
@@ -19,7 +21,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-white p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header with Profile Button */}
         <div className="flex justify-between items-center mb-8">
           {(isPlaying || showCategories) && (
             <Button 
@@ -35,14 +36,16 @@ const Index = () => {
             </Button>
           )}
           <div className="flex-1" />
-          <Avatar className="cursor-pointer hover:opacity-80">
+          <Avatar 
+            className="cursor-pointer hover:opacity-80"
+            onClick={() => navigate('/profile')}
+          >
             <AvatarFallback>
               <User className="h-5 w-5" />
             </AvatarFallback>
           </Avatar>
         </div>
 
-        {/* Main Content */}
         <div className="flex flex-col items-center justify-center">
           {!isPlaying && !showCategories ? (
             <div className="text-center animate-fade-in">
