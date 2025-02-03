@@ -3,7 +3,7 @@ interface StorageData {
   settings: {
     soundEffects: boolean;
     notifications: boolean;
-    language: string;
+    language: 'tr' | 'en';
   };
 }
 
@@ -30,7 +30,7 @@ export const setStorageData = (data: StorageData) => {
 
 export const updateSettings = (
   key: keyof StorageData['settings'],
-  value: boolean | string
+  value: StorageData['settings'][keyof StorageData['settings']]
 ) => {
   const data = getStorageData();
   data.settings[key] = value;
