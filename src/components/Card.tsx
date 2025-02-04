@@ -135,15 +135,16 @@ export const Card = ({ category }: { category: string }) => {
         </Sheet>
       </div>
 
-      <div className="perspective-1000">
+      <div className="relative perspective-1000">
         <div
           className={`relative w-full transition-transform duration-500 transform-style-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
           onClick={() => setIsFlipped(!isFlipped)}
+          style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Ön yüz */}
-          <div className="absolute w-full backface-hidden">
+          <div className="absolute w-full backface-hidden" style={{ backfaceVisibility: 'hidden' }}>
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
               <div className="w-full h-full flex items-center justify-center">
                 <p className="text-4xl font-bold text-white">
@@ -154,7 +155,10 @@ export const Card = ({ category }: { category: string }) => {
           </div>
 
           {/* Arka yüz */}
-          <div className="absolute w-full backface-hidden rotate-y-180">
+          <div 
+            className="absolute w-full backface-hidden rotate-y-180" 
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+          >
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
               <div className="w-full h-full flex items-center justify-center p-8">
                 <p className="text-2xl font-bold text-accent-foreground">
@@ -166,13 +170,15 @@ export const Card = ({ category }: { category: string }) => {
         </div>
       </div>
 
-      <Button 
-        className="mt-8 w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
-        onClick={drawCard}
-      >
-        <Shuffle className="mr-2 h-5 w-5" />
-        Yeni Kart Çek
-      </Button>
+      <div className="mt-8">
+        <Button 
+          className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+          onClick={drawCard}
+        >
+          <Shuffle className="mr-2 h-5 w-5" />
+          Yeni Kart Çek
+        </Button>
+      </div>
     </div>
   );
 };
