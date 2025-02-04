@@ -51,6 +51,9 @@ export default {
         "card-flip": "card-flip 0.6s ease-in-out forwards",
         "fade-in": "fade-in 0.3s ease-out",
       },
+      backgroundImage: {
+        'card-pattern': "linear-gradient(to bottom right, var(--tw-gradient-stops))",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
