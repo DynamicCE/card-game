@@ -1,9 +1,23 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
-import { Shuffle, Volume2, VolumeX, LogOut } from "lucide-react";
+import { 
+  Shuffle, 
+  User,
+  Volume2, 
+  VolumeX, 
+  LogOut,
+  Settings
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface CardData {
   id: string;
@@ -54,7 +68,6 @@ export const Card = ({ category }: { category: string }) => {
     setIsFlipped(false);
     
     if (isSoundOn) {
-      // Kart çekme sesi efekti burada eklenebilir
       new Audio("/card-shuffle.mp3").play().catch(() => {});
     }
   };
@@ -73,47 +86,83 @@ export const Card = ({ category }: { category: string }) => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsSoundOn(!isSoundOn)}
-          className="text-primary hover:text-primary/80"
-        >
-          {isSoundOn ? <Volume2 size={24} /> : <VolumeX size={24} />}
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleLogout}
-          className="text-primary hover:text-primary/80"
-        >
-          <LogOut size={24} />
-        </Button>
+      <div className="flex justify-end mb-6">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-primary hover:text-primary/80"
+            >
+              <User size={24} />
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Hesap</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Ses</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsSoundOn(!isSoundOn)}
+                >
+                  {isSoundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
+                </Button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Ayarlar</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate('/profile')}
+                >
+                  <Settings size={20} />
+                </Button>
+              </div>
+              <Button
+                variant="destructive"
+                className="w-full"
+                onClick={handleLogout}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Çıkış Yap
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       <div className="perspective-1000">
         <div
-          className={`relative w-full transition-transform duration-500 transform-style-3d cursor-pointer ${
+          className={`relative w-full transition-transform duration-500 transform-style-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
           onClick={() => setIsFlipped(!isFlipped)}
         >
           {/* Ön yüz */}
-          <CardUI className="absolute w-full h-full backface-hidden bg-gradient-to-br from-primary to-secondary shadow-xl">
-            <div className="w-full aspect-[3/4] flex items-center justify-center p-8 text-center">
-              <div className="text-6xl">🎮</div>
-            </div>
-          </CardUI>
+          <div className="absolute w-full backface-hidden">
+            <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="text-6xl transform transition-transform hover:scale-110">
+                  🎮
+                </div>
+              </div>
+            </CardUI>
+          </div>
 
           {/* Arka yüz */}
-          <CardUI className="absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-accent to-accent/80 shadow-xl">
-            <div className="w-full aspect-[3/4] flex items-center justify-center p-8 text-center">
-              <p className="text-2xl font-bold text-accent-foreground">
-                {currentCard?.content}
-              </p>
-            </div>
-          </CardUI>
+          <div className="absolute w-full backface-hidden rotate-y-180">
+            <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
+              <div className="w-full h-full flex items-center justify-center p-8">
+                <p className="text-2xl font-bold text-accent-foreground">
+                  {currentCard?.content}
+                </p>
+              </div>
+            </CardUI>
+          </div>
         </div>
       </div>
 
