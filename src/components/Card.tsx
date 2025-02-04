@@ -57,26 +57,32 @@ export const Card = ({ category }: { category: string }) => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <CardUI
-        className={`aspect-[3/4] cursor-pointer transition-all duration-500 transform perspective-1000 ${
-          isFlipped ? "rotate-y-180" : ""
-        }`}
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <div className="w-full h-full flex items-center justify-center p-8 text-center">
-          {isFlipped ? (
-            <p className="text-xl font-bold">{currentCard?.content}</p>
-          ) : (
-            <div className="text-6xl">🎮</div>
-          )}
-        </div>
-      </CardUI>
+      <div className="perspective-1000">
+        <div
+          className={`relative w-full transition-transform duration-500 transform-style-3d cursor-pointer ${
+            isFlipped ? "rotate-y-180" : ""
+          }`}
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          {/* Ön yüz */}
+          <CardUI className="absolute w-full h-full backface-hidden bg-primary">
+            <div className="w-full aspect-[3/4] flex items-center justify-center p-8 text-center">
+              <div className="text-6xl">🎮</div>
+            </div>
+          </CardUI>
 
-      <Button
-        className="mt-8 w-full"
-        onClick={drawCard}
-        variant="outline"
-      >
+          {/* Arka yüz */}
+          <CardUI className="absolute w-full h-full backface-hidden rotate-y-180 bg-accent">
+            <div className="w-full aspect-[3/4] flex items-center justify-center p-8 text-center">
+              <p className="text-xl font-bold text-accent-foreground">
+                {currentCard?.content}
+              </p>
+            </div>
+          </CardUI>
+        </div>
+      </div>
+
+      <Button className="mt-8 w-full" onClick={drawCard} variant="outline">
         <Shuffle className="mr-2 h-4 w-4" />
         Yeni Kart Çek
       </Button>
