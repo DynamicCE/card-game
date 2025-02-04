@@ -146,9 +146,9 @@ export const Card = ({ category }: { category: string }) => {
           <div className="absolute w-full backface-hidden">
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="text-6xl transform transition-transform hover:scale-110">
-                  🎮
-                </div>
+                <p className="text-4xl font-bold text-white">
+                  Do or Drink
+                </p>
               </div>
             </CardUI>
           </div>

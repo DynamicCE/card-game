@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/Card";
 import { Categories } from "@/components/Categories";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { User, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
@@ -35,15 +34,6 @@ const Index = () => {
               Geri
             </Button>
           )}
-          <div className="flex-1" />
-          <Avatar 
-            className="cursor-pointer hover:opacity-80"
-            onClick={() => navigate('/profile')}
-          >
-            <AvatarFallback>
-              <User className="h-5 w-5" />
-            </AvatarFallback>
-          </Avatar>
         </div>
 
         <div className="flex flex-col items-center justify-center">
