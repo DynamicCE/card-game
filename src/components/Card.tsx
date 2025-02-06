@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
@@ -85,8 +86,8 @@ export const Card = ({ category }: { category: string }) => {
   }, [category]);
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="flex justify-end mb-6">
+    <div className="w-full max-w-md mx-auto flex flex-col gap-8">
+      <div className="flex justify-end">
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -99,7 +100,7 @@ export const Card = ({ category }: { category: string }) => {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>Hesap</SheetTitle>
+              <SheetTitle>Ayarlar</SheetTitle>
             </SheetHeader>
             <div className="mt-6 space-y-4">
               <div className="flex items-center justify-between">
@@ -113,7 +114,7 @@ export const Card = ({ category }: { category: string }) => {
                 </Button>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Ayarlar</span>
+                <span className="text-sm">Profil Ayarları</span>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -135,9 +136,9 @@ export const Card = ({ category }: { category: string }) => {
         </Sheet>
       </div>
 
-      <div className="relative perspective-1000">
+      <div className="relative flex-grow">
         <div
-          className={`relative w-full transition-transform duration-500 transform-style-3d ${
+          className={`relative w-full transition-transform duration-500 transform-style-preserve-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
           onClick={() => setIsFlipped(!isFlipped)}
@@ -161,7 +162,7 @@ export const Card = ({ category }: { category: string }) => {
           >
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
               <div className="w-full h-full flex items-center justify-center p-8">
-                <p className="text-2xl font-bold text-accent-foreground">
+                <p className="text-2xl font-bold text-accent-foreground text-center">
                   {currentCard?.content}
                 </p>
               </div>
@@ -170,7 +171,7 @@ export const Card = ({ category }: { category: string }) => {
         </div>
       </div>
 
-      <div className="mt-8">
+      <div>
         <Button 
           className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
           onClick={drawCard}
