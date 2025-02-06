@@ -1,8 +1,8 @@
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
-import { isPlatform } from '@capacitor/core';
+import { Capacitor } from '@capacitor/core';
 
 export const initializeGoogleAuth = async () => {
-  if (isPlatform('android')) {
+  if (Capacitor.getPlatform() === 'android') {
     await GoogleAuth.initialize();
   }
 };
