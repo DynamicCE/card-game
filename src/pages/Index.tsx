@@ -33,8 +33,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-white p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen w-full bg-background text-white flex flex-col">
+      <div className="flex-1 w-full max-w-4xl mx-auto px-4 py-6 flex flex-col">
         <div className="flex justify-between items-center mb-8">
           {(isPlaying || showCategories) && (
             <Button 
@@ -43,7 +43,7 @@ const Index = () => {
                 setIsPlaying(false);
                 setShowCategories(false);
               }}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 animate-fade-in"
             >
               <ArrowLeft className="w-4 h-4" />
               Geri
@@ -52,17 +52,19 @@ const Index = () => {
           {!user && (
             <Button
               onClick={handleGoogleSignIn}
-              className="bg-white text-black hover:bg-gray-100"
+              className="bg-white text-black hover:bg-gray-100 animate-fade-in"
             >
               Google ile Giriş Yap
             </Button>
           )}
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex-1 flex flex-col items-center justify-center">
           {!isPlaying && !showCategories ? (
-            <div className="text-center animate-fade-in">
-              <h1 className="text-4xl font-bold mb-8 text-primary">Do or Drink</h1>
+            <div className="text-center animate-fade-in w-full max-w-md">
+              <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
+                Do or Drink
+              </h1>
               {user ? (
                 <>
                   <p className="text-lg mb-8 text-gray-300">
@@ -71,29 +73,33 @@ const Index = () => {
                   <div className="space-y-4">
                     <Button
                       onClick={() => setShowCategories(true)}
-                      className="w-full bg-primary hover:bg-secondary text-white px-8 py-4 rounded-lg text-lg transition-colors"
+                      className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity text-white px-8 py-6 rounded-lg text-lg"
                     >
                       Kategori Seç
                     </Button>
                     <Button
                       onClick={() => setIsPlaying(true)}
                       variant="outline"
-                      className="w-full px-8 py-4 rounded-lg text-lg"
+                      className="w-full px-8 py-6 rounded-lg text-lg hover:bg-primary/10 transition-colors"
                     >
                       Hızlı Başla
                     </Button>
                   </div>
                 </>
               ) : (
-                <p className="text-lg mb-8 text-gray-300">
+                <p className="text-lg mb-8 text-gray-300 animate-pulse">
                   Başlamak için giriş yapın
                 </p>
               )}
             </div>
           ) : showCategories ? (
-            <Categories onSelectCategory={handleCategorySelect} />
+            <div className="w-full animate-fade-in">
+              <Categories onSelectCategory={handleCategorySelect} />
+            </div>
           ) : (
-            <Card category={selectedCategory} />
+            <div className="w-full animate-fade-in">
+              <Card category={selectedCategory} />
+            </div>
           )}
         </div>
       </div>
