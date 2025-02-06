@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
@@ -136,16 +135,20 @@ export const Card = ({ category }: { category: string }) => {
         </Sheet>
       </div>
 
-      <div className="relative flex-grow">
+      <div className="relative" style={{ perspective: '1000px', zIndex: 1 }}>
         <div
-          className={`relative w-full transition-transform duration-500 transform-style-preserve-3d ${
-            isFlipped ? "rotate-y-180" : ""
-          }`}
+          className={`relative w-full transition-transform duration-500`}
+          style={{ 
+            transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          }}
           onClick={() => setIsFlipped(!isFlipped)}
-          style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Ön yüz */}
-          <div className="absolute w-full backface-hidden" style={{ backfaceVisibility: 'hidden' }}>
+          <div 
+            className="absolute w-full" 
+            style={{ backfaceVisibility: 'hidden' }}
+          >
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
               <div className="w-full h-full flex items-center justify-center">
                 <p className="text-4xl font-bold text-white">
@@ -157,8 +160,11 @@ export const Card = ({ category }: { category: string }) => {
 
           {/* Arka yüz */}
           <div 
-            className="absolute w-full backface-hidden rotate-y-180" 
-            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            className="absolute w-full" 
+            style={{ 
+              backfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)'
+            }}
           >
             <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
               <div className="w-full h-full flex items-center justify-center p-8">
@@ -171,7 +177,7 @@ export const Card = ({ category }: { category: string }) => {
         </div>
       </div>
 
-      <div>
+      <div className="relative" style={{ zIndex: 2 }}>
         <Button 
           className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
           onClick={drawCard}
