@@ -6,7 +6,8 @@ import {
   Volume2, 
   VolumeX, 
   LogOut,
-  Settings
+  Settings,
+  ArrowLeft
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -95,8 +96,16 @@ export const Card = ({ category }: { category: string }) => {
   }, [category]);
 
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col gap-8">
-      <div className="flex justify-end">
+    <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col overflow-hidden">
+      <div className="flex justify-between items-center p-4">
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={() => navigate('/')}
+          className="text-primary hover:text-primary/80"
+        >
+          <ArrowLeft size={24} />
+        </Button>
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -145,62 +154,64 @@ export const Card = ({ category }: { category: string }) => {
         </Sheet>
       </div>
 
-      <div className="relative" style={{ perspective: '1000px' }}>
-        <AnimatePresence>
-          <motion.div
-            key={currentCard?.id}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.7}
-            onDragEnd={handleDragEnd}
-            style={{ 
-              touchAction: 'none',
-              transformStyle: 'preserve-3d',
-              transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-            }}
-            className="relative w-full transition-transform duration-500 cursor-grab active:cursor-grabbing"
-            initial={{ x: direction * 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: direction * -300, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            onClick={() => setIsFlipped(!isFlipped)}
-          >
-            {/* Ön yüz */}
-            <div 
-              className="absolute w-full" 
-              style={{ backfaceVisibility: 'hidden' }}
-            >
-              <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
-                <div className="w-full h-full flex items-center justify-center">
-                  <p className="text-4xl font-bold text-white">
-                    Do or Drink
-                  </p>
-                </div>
-              </CardUI>
-            </div>
-
-            {/* Arka yüz */}
-            <div 
-              className="absolute w-full" 
+      <div className="flex-1 flex flex-col items-center justify-center px-4">
+        <div className="relative w-full h-[70vh]" style={{ perspective: '1000px' }}>
+          <AnimatePresence>
+            <motion.div
+              key={currentCard?.id}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.7}
+              onDragEnd={handleDragEnd}
               style={{ 
-                backfaceVisibility: 'hidden',
-                transform: 'rotateY(180deg)'
+                touchAction: 'none',
+                transformStyle: 'preserve-3d',
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}
+              className="relative w-full h-full transition-transform duration-500 cursor-grab active:cursor-grabbing"
+              initial={{ x: direction * 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: direction * -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              onClick={() => setIsFlipped(!isFlipped)}
             >
-              <CardUI className="w-full aspect-[3/4] bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
-                <div className="w-full h-full flex items-center justify-center p-8">
-                  <p className="text-2xl font-bold text-accent-foreground text-center">
-                    {currentCard?.content}
-                  </p>
-                </div>
-              </CardUI>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      
-      <div className="text-center text-sm text-muted-foreground">
-        Kartı değiştirmek için sağa veya sola kaydırın
+              {/* Ön yüz */}
+              <div 
+                className="absolute w-full h-full" 
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                <CardUI className="w-full h-full bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-4xl font-bold text-white">
+                      Do or Drink
+                    </p>
+                  </div>
+                </CardUI>
+              </div>
+
+              {/* Arka yüz */}
+              <div 
+                className="absolute w-full h-full" 
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)'
+                }}
+              >
+                <CardUI className="w-full h-full bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
+                  <div className="w-full h-full flex items-center justify-center p-8">
+                    <p className="text-2xl font-bold text-accent-foreground text-center">
+                      {currentCard?.content}
+                    </p>
+                  </div>
+                </CardUI>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        
+        <div className="text-center text-sm text-muted-foreground mt-4">
+          Kartı değiştirmek için sağa veya sola kaydırın
+        </div>
       </div>
     </div>
   );
