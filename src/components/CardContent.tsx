@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
 import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SpicyLevel } from "./Card";
 
 interface CardData {
   id: string;
   content: string;
   category: string;
+  spicyLevel: SpicyLevel;
 }
 
 interface CardContentProps {
@@ -20,6 +22,36 @@ interface CardContentProps {
   totalCards?: number;
   isSoundOn?: boolean;
 }
+
+const getSpicyLevelColors = (level: SpicyLevel): { background: string; text: string } => {
+  switch (level) {
+    case "mild":
+      return {
+        background: "from-[#F2FCE2] via-[#E5DEFF] to-[#F2FCE2]",
+        text: "text-gray-800"
+      };
+    case "medium":
+      return {
+        background: "from-[#FEF7CD] via-[#FEC6A1] to-[#FEF7CD]",
+        text: "text-gray-800"
+      };
+    case "spicy":
+      return {
+        background: "from-[#F97316] via-[#D946EF] to-[#F97316]",
+        text: "text-white"
+      };
+    case "extra_spicy":
+      return {
+        background: "from-[#8B5CF6] via-[#ea384c] to-[#8B5CF6]",
+        text: "text-white"
+      };
+    default:
+      return {
+        background: "from-primary via-secondary to-primary",
+        text: "text-white"
+      };
+  }
+};
 
 export const CardContent = ({
   noCards,
@@ -73,6 +105,8 @@ export const CardContent = ({
     }
   };
 
+  const colors = currentCard ? getSpicyLevelColors(currentCard.spicyLevel) : getSpicyLevelColors("mild");
+
   return (
     <>
       <div className="relative w-full h-[70vh] perspective-1000">
@@ -83,9 +117,9 @@ export const CardContent = ({
           onClick={() => setIsFlipped(!isFlipped)}
         >
           <div className="absolute w-full h-full backface-hidden">
-            <CardUI className="w-full h-full bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
+            <CardUI className={`w-full h-full bg-gradient-to-br ${colors.background} shadow-xl`}>
               <div className="w-full h-full flex items-center justify-center">
-                <p className="text-4xl font-bold text-white">
+                <p className={`text-4xl font-bold ${colors.text}`}>
                   Do or Drink
                 </p>
               </div>
@@ -93,9 +127,9 @@ export const CardContent = ({
           </div>
 
           <div className="absolute w-full h-full backface-hidden rotate-y-180">
-            <CardUI className="w-full h-full bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
+            <CardUI className={`w-full h-full bg-gradient-to-br ${colors.background} shadow-xl`}>
               <div className="w-full h-full flex items-center justify-center p-8">
-                <p className="text-2xl font-bold text-accent-foreground text-center">
+                <p className={`text-2xl font-bold ${colors.text} text-center`}>
                   {currentCard?.content}
                 </p>
               </div>
