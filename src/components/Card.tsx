@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
@@ -7,11 +8,13 @@ import {
   VolumeX, 
   LogOut,
   Settings,
-  ArrowLeft
+  ArrowLeft,
+  ArrowRight,
+  ArrowLeftCircle,
+  ArrowRightCircle
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Sheet,
   SheetContent,
@@ -31,44 +34,48 @@ const cards: Record<string, CardData[]> = {
     { id: "1", content: "Su iç", category: "basic" },
     { id: "2", content: "Dans et", category: "basic" },
     { id: "3", content: "Şarkı söyle", category: "basic" },
+    { id: "4", content: "10 Saniye zıpla", category: "basic" },
+    { id: "5", content: "Arkadaşına sarıl", category: "basic" },
   ],
   party: [
-    { id: "4", content: "Taklit yap", category: "party" },
-    { id: "5", content: "Hikaye anlat", category: "party" },
+    { id: "6", content: "En sevdiğin şarkıyı söyle", category: "party" },
+    { id: "7", content: "Komik bir hikaye anlat", category: "party" },
+    { id: "8", content: "Tavuk gibi ses çıkar", category: "party" },
+    { id: "9", content: "Sevdiğin birini taklit et", category: "party" },
   ],
   extreme: [
-    { id: "6", content: "Zıpla", category: "extreme" },
-    { id: "7", content: "Koş", category: "extreme" },
+    { id: "10", content: "30 saniye planking yap", category: "extreme" },
+    { id: "11", content: "20 şınav çek", category: "extreme" },
+    { id: "12", content: "1 dakika durmadan dans et", category: "extreme" },
   ],
   couples: [
-    { id: "8", content: "El ele tutuş", category: "couples" },
-    { id: "9", content: "Sarıl", category: "couples" },
+    { id: "13", content: "Partnerin için romantik bir şarkı söyle", category: "couples" },
+    { id: "14", content: "Partnerine en güzel kompliman yap", category: "couples" },
+    { id: "15", content: "Partnerin ile dans et", category: "couples" },
   ],
 };
 
 export const Card = ({ category }: { category: string }) => {
-  const [currentCard, setCurrentCard] = useState<CardData | null>(null);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
-  const [direction, setDirection] = useState<number>(0);
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  const categoryCards = cards[category] || [];
 
-  const drawCard = () => {
-    const categoryCards = cards[category];
-    if (!categoryCards || categoryCards.length === 0) {
-      toast({
-        title: "Hata",
-        description: "Bu kategoride kart bulunamadı.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const randomIndex = Math.floor(Math.random() * categoryCards.length);
-    setCurrentCard(categoryCards[randomIndex]);
+  const handleNextCard = () => {
     setIsFlipped(false);
-    
+    setCurrentCardIndex((prev) => (prev + 1) % categoryCards.length);
+    if (isSoundOn) {
+      const audio = new Audio("/card-shuffle.mp3");
+      audio.play().catch(() => {});
+    }
+  };
+
+  const handlePrevCard = () => {
+    setIsFlipped(false);
+    setCurrentCardIndex((prev) => (prev - 1 + categoryCards.length) % categoryCards.length);
     if (isSoundOn) {
       const audio = new Audio("/card-shuffle.mp3");
       audio.play().catch(() => {});
@@ -83,17 +90,20 @@ export const Card = ({ category }: { category: string }) => {
     navigate("/");
   };
 
-  const handleDragEnd = (_: any, info: any) => {
-    const threshold = 100;
-    if (Math.abs(info.offset.x) > threshold) {
-      setDirection(info.offset.x > 0 ? 1 : -1);
-      drawCard();
-    }
-  };
-
   useEffect(() => {
-    drawCard();
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
   }, [category]);
+
+  const currentCard = categoryCards[currentCardIndex];
+
+  if (!currentCard) {
+    return (
+      <div className="text-center">
+        Bu kategoride kart bulunmamaktadır.
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col overflow-hidden">
@@ -155,63 +165,66 @@ export const Card = ({ category }: { category: string }) => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4">
-        <div className="relative w-full h-[70vh]" style={{ perspective: '1000px' }}>
-          <AnimatePresence>
-            <motion.div
-              key={currentCard?.id}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.7}
-              onDragEnd={handleDragEnd}
-              style={{ 
-                touchAction: 'none',
-                transformStyle: 'preserve-3d',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-              }}
-              className="relative w-full h-full transition-transform duration-500 cursor-grab active:cursor-grabbing"
-              initial={{ x: direction * 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: direction * -300, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              onClick={() => setIsFlipped(!isFlipped)}
-            >
-              {/* Ön yüz */}
-              <div 
-                className="absolute w-full h-full" 
-                style={{ backfaceVisibility: 'hidden' }}
-              >
-                <CardUI className="w-full h-full bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <p className="text-4xl font-bold text-white">
-                      Do or Drink
-                    </p>
-                  </div>
-                </CardUI>
-              </div>
+        <div className="relative w-full h-[70vh] perspective-1000">
+          <div
+            className={`w-full h-full transition-transform duration-500 transform-style-3d cursor-pointer ${
+              isFlipped ? 'rotate-y-180' : ''
+            }`}
+            onClick={() => setIsFlipped(!isFlipped)}
+          >
+            {/* Ön yüz */}
+            <div className="absolute w-full h-full backface-hidden">
+              <CardUI className="w-full h-full bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
+                <div className="w-full h-full flex items-center justify-center">
+                  <p className="text-4xl font-bold text-white">
+                    Do or Drink
+                  </p>
+                </div>
+              </CardUI>
+            </div>
 
-              {/* Arka yüz */}
-              <div 
-                className="absolute w-full h-full" 
-                style={{ 
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)'
-                }}
-              >
-                <CardUI className="w-full h-full bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
-                  <div className="w-full h-full flex items-center justify-center p-8">
-                    <p className="text-2xl font-bold text-accent-foreground text-center">
-                      {currentCard?.content}
-                    </p>
-                  </div>
-                </CardUI>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+            {/* Arka yüz */}
+            <div 
+              className="absolute w-full h-full backface-hidden rotate-y-180"
+            >
+              <CardUI className="w-full h-full bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
+                <div className="w-full h-full flex items-center justify-center p-8">
+                  <p className="text-2xl font-bold text-accent-foreground text-center">
+                    {currentCard.content}
+                  </p>
+                </div>
+              </CardUI>
+            </div>
+          </div>
         </div>
         
-        <div className="text-center text-sm text-muted-foreground mt-4">
-          Kartı değiştirmek için sağa veya sola kaydırın
+        <div className="flex justify-between items-center w-full mt-8 px-4">
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={handlePrevCard}
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            <ArrowLeftCircle size={32} />
+          </Button>
+          
+          <span className="text-sm text-muted-foreground">
+            {currentCardIndex + 1} / {categoryCards.length}
+          </span>
+          
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={handleNextCard}
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            <ArrowRightCircle size={32} />
+          </Button>
         </div>
+        
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Kartı çevirmek için tıklayın
+        </p>
       </div>
     </div>
   );
