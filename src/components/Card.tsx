@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import {
   Volume2, 
   VolumeX, 
   LogOut,
-  Settings,
+  CreditCard,
   ArrowLeft,
   ArrowRight,
   ArrowLeftCircle,
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
@@ -22,6 +22,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { getStorageData, updateSettings, isPurchased } from "@/utils/storage";
+import { categories } from "@/components/Categories";
 
 interface CardData {
   id: string;
@@ -61,9 +63,9 @@ export const Card = ({ category }: { category: string }) => {
   const [isSoundOn, setIsSoundOn] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [settings, setSettings] = useState(getStorageData().settings);
+  const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
   
-  const categoryCards = cards[category] || [];
-
   const handleNextCard = () => {
     setIsFlipped(false);
     setCurrentCardIndex((prev) => (prev + 1) % categoryCards.length);
@@ -94,6 +96,20 @@ export const Card = ({ category }: { category: string }) => {
     setCurrentCardIndex(0);
     setIsFlipped(false);
   }, [category]);
+
+  const toggleSetting = (key: keyof typeof settings) => {
+    if (typeof settings[key] === 'boolean') {
+      const newValue = !settings[key];
+      updateSettings(key, newValue);
+      setSettings(prev => ({ ...prev, [key]: newValue }));
+    }
+  };
+
+  const changeLanguage = () => {
+    const newLang = settings.language === 'tr' ? 'en' : 'tr';
+    updateSettings('language', newLang);
+    setSettings(prev => ({ ...prev, language: newLang }));
+  };
 
   const currentCard = categoryCards[currentCardIndex];
 
@@ -128,29 +144,76 @@ export const Card = ({ category }: { category: string }) => {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>Ayarlar</SheetTitle>
+              <SheetTitle className="mb-4">Profil</SheetTitle>
             </SheetHeader>
-            <div className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Ses</span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsSoundOn(!isSoundOn)}
-                >
-                  {isSoundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
-                </Button>
+            
+            <div className="flex flex-col items-center mb-8">
+              <Avatar className="w-24 h-24 mb-4">
+                <AvatarFallback className="text-4xl">
+                  <User />
+                </AvatarFallback>
+              </Avatar>
+              <h2 className="text-2xl font-bold">Misafir Kullanıcı</h2>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-semibold flex items-center gap-2">
+                  <CreditCard className="w-4 h-4" />
+                  Satın Alınan Paketler
+                </h3>
+                {purchasedCategories.length > 0 ? (
+                  <div className="grid gap-2">
+                    {purchasedCategories.map(category => (
+                      <div key={category.id} className="flex items-center gap-2 p-2 bg-secondary/10 rounded-lg">
+                        {category.icon}
+                        <span>{category.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    Henüz satın alınmış paket bulunmuyor.
+                  </div>
+                )}
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Profil Ayarları</span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => navigate('/profile')}
-                >
-                  <Settings size={20} />
-                </Button>
+
+              <div className="space-y-4">
+                <h3 className="font-semibold">Ayarlar</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Ses Efektleri</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toggleSetting('soundEffects')}
+                    >
+                      {settings.soundEffects ? 'Açık' : 'Kapalı'}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Bildirimler</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toggleSetting('notifications')}
+                    >
+                      {settings.notifications ? 'Açık' : 'Kapalı'}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Dil</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={changeLanguage}
+                    >
+                      {settings.language === 'tr' ? 'Türkçe' : 'English'}
+                    </Button>
+                  </div>
+                </div>
               </div>
+
               <Button
                 variant="destructive"
                 className="w-full"
@@ -172,7 +235,6 @@ export const Card = ({ category }: { category: string }) => {
             }`}
             onClick={() => setIsFlipped(!isFlipped)}
           >
-            {/* Ön yüz */}
             <div className="absolute w-full h-full backface-hidden">
               <CardUI className="w-full h-full bg-gradient-to-br from-primary via-secondary to-primary shadow-xl">
                 <div className="w-full h-full flex items-center justify-center">
@@ -183,7 +245,6 @@ export const Card = ({ category }: { category: string }) => {
               </CardUI>
             </div>
 
-            {/* Arka yüz */}
             <div 
               className="absolute w-full h-full backface-hidden rotate-y-180"
             >
