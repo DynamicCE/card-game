@@ -33,31 +33,33 @@ interface CardData {
 
 const cards: Record<string, CardData[]> = {
   basic: [
-    { id: "1", content: "Su iç", category: "basic" },
-    { id: "2", content: "Dans et", category: "basic" },
-    { id: "3", content: "Şarkı söyle", category: "basic" },
-    { id: "4", content: "10 Saniye zıpla", category: "basic" },
-    { id: "5", content: "Arkadaşına sarıl", category: "basic" },
+    { id: "1", content: "Telefonundaki en utanç verici fotoğrafı göster ya da iç", category: "basic" },
+    { id: "2", content: "En son attığın mesajı yüksek sesle oku ya da iç", category: "basic" },
+    { id: "3", content: "Gruptaki birinin taklidini yap ya da iç", category: "basic" },
+    { id: "4", content: "En sevdiğin şarkıyı söyle ya da iç", category: "basic" },
+    { id: "5", content: "10 şınav çek ya da iç", category: "basic" },
   ],
   party: [
     { id: "6", content: "En sevdiğin şarkıyı söyle", category: "party" },
     { id: "7", content: "Komik bir hikaye anlat", category: "party" },
     { id: "8", content: "Tavuk gibi ses çıkar", category: "party" },
-    { id: "9", content: "Sevdiğin birini taklit et", category: "party" },
   ],
   extreme: [
-    { id: "10", content: "30 saniye planking yap", category: "extreme" },
-    { id: "11", content: "20 şınav çek", category: "extreme" },
-    { id: "12", content: "1 dakika durmadan dans et", category: "extreme" },
+    { id: "9", content: "30 saniye planking yap", category: "extreme" },
+    { id: "10", content: "20 şınav çek", category: "extreme" },
+    { id: "11", content: "1 dakika durmadan dans et", category: "extreme" },
   ],
   couples: [
-    { id: "13", content: "Partnerin için romantik bir şarkı söyle", category: "couples" },
-    { id: "14", content: "Partnerine en güzel kompliman yap", category: "couples" },
-    { id: "15", content: "Partnerin ile dans et", category: "couples" },
+    { id: "12", content: "Partnerin için romantik bir şarkı söyle", category: "couples" },
+    { id: "13", content: "Partnerine en güzel kompliman yap", category: "couples" },
+    { id: "14", content: "Partnerin ile dans et", category: "couples" },
   ],
-};
+} as const;
 
 export const Card = ({ category }: { category: string }) => {
+  console.log('Category:', category);
+  console.log('Available cards:', cards);
+  
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -65,9 +67,12 @@ export const Card = ({ category }: { category: string }) => {
   const navigate = useNavigate();
   const [settings, setSettings] = useState(getStorageData().settings);
   const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
-  
+
+  console.log('Selected category cards:', cards[category]);
   const categoryCards = cards[category] || [];
+  console.log('Category cards after fallback:', categoryCards);
   const currentCard = categoryCards[currentCardIndex];
+  console.log('Current card:', currentCard);
 
   const handleNextCard = () => {
     if (categoryCards.length === 0) return;
