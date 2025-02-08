@@ -67,8 +67,11 @@ export const Card = ({ category }: { category: string }) => {
   const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
   
   const categoryCards = cards[category] || [];
+  const currentCard = categoryCards[currentCardIndex];
 
   const handleNextCard = () => {
+    if (categoryCards.length === 0) return;
+    
     setIsFlipped(false);
     setCurrentCardIndex((prev) => (prev + 1) % categoryCards.length);
     if (isSoundOn) {
@@ -78,6 +81,8 @@ export const Card = ({ category }: { category: string }) => {
   };
 
   const handlePrevCard = () => {
+    if (categoryCards.length === 0) return;
+    
     setIsFlipped(false);
     setCurrentCardIndex((prev) => (prev - 1 + categoryCards.length) % categoryCards.length);
     if (isSoundOn) {
@@ -113,12 +118,20 @@ export const Card = ({ category }: { category: string }) => {
     setSettings(prev => ({ ...prev, language: newLang }));
   };
 
-  const currentCard = categoryCards[currentCardIndex];
-
-  if (!currentCard) {
+  if (!currentCard || categoryCards.length === 0) {
     return (
-      <div className="text-center">
-        Bu kategoride kart bulunmamaktadır.
+      <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col items-center justify-center">
+        <div className="text-center p-4">
+          <p className="text-lg font-medium text-muted-foreground">
+            Bu kategoride kart bulunmamaktadır.
+          </p>
+          <Button 
+            className="mt-4"
+            onClick={() => navigate('/')}
+          >
+            Ana Sayfaya Dön
+          </Button>
+        </div>
       </div>
     );
   }
