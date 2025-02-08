@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
@@ -6,7 +7,9 @@ import {
   Volume2, 
   VolumeX, 
   LogOut,
+  Settings,
   ArrowLeft,
+  ArrowRight,
   ArrowLeftCircle,
   ArrowRightCircle
 } from "lucide-react";
@@ -19,7 +22,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getStorageData, updateSettings } from "@/utils/storage";
 
 interface CardData {
   id: string;
@@ -59,7 +61,6 @@ export const Card = ({ category }: { category: string }) => {
   const [isSoundOn, setIsSoundOn] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [settings, setSettings] = useState(getStorageData().settings);
   
   const categoryCards = cards[category] || [];
 
@@ -87,20 +88,6 @@ export const Card = ({ category }: { category: string }) => {
       description: "Başarıyla çıkış yaptınız.",
     });
     navigate("/");
-  };
-
-  const toggleSetting = (key: keyof typeof settings) => {
-    if (typeof settings[key] === 'boolean') {
-      const newValue = !settings[key];
-      updateSettings(key, newValue);
-      setSettings(prev => ({ ...prev, [key]: newValue }));
-    }
-  };
-
-  const changeLanguage = () => {
-    const newLang = settings.language === 'tr' ? 'en' : 'tr';
-    updateSettings('language', newLang);
-    setSettings(prev => ({ ...prev, language: newLang }));
   };
 
   useEffect(() => {
@@ -149,30 +136,19 @@ export const Card = ({ category }: { category: string }) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => {
-                    setIsSoundOn(!isSoundOn);
-                    toggleSetting('soundEffects');
-                  }}
+                  onClick={() => setIsSoundOn(!isSoundOn)}
                 >
                   {isSoundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
                 </Button>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Bildirimler</span>
-                <Button 
-                  variant="outline"
-                  onClick={() => toggleSetting('notifications')}
+                <span className="text-sm">Profil Ayarları</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate('/profile')}
                 >
-                  {settings.notifications ? 'Açık' : 'Kapalı'}
-                </Button>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Dil</span>
-                <Button 
-                  variant="outline"
-                  onClick={changeLanguage}
-                >
-                  {settings.language === 'tr' ? 'Türkçe' : 'English'}
+                  <Settings size={20} />
                 </Button>
               </div>
               <Button
@@ -208,7 +184,9 @@ export const Card = ({ category }: { category: string }) => {
             </div>
 
             {/* Arka yüz */}
-            <div className="absolute w-full h-full backface-hidden rotate-y-180">
+            <div 
+              className="absolute w-full h-full backface-hidden rotate-y-180"
+            >
               <CardUI className="w-full h-full bg-gradient-to-br from-accent via-accent/90 to-accent shadow-xl">
                 <div className="w-full h-full flex items-center justify-center p-8">
                   <p className="text-2xl font-bold text-accent-foreground text-center">
@@ -231,7 +209,7 @@ export const Card = ({ category }: { category: string }) => {
           </Button>
           
           <span className="text-sm text-muted-foreground">
-            {currentCardIndex + 1} / {cards[category].length}
+            {currentCardIndex + 1} / {categoryCards.length}
           </span>
           
           <Button
