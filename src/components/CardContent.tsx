@@ -52,7 +52,8 @@ export const CardContent = ({
   const handlePrevCard = () => {
     if (setCurrentCardIndex) {
       setIsFlipped(false);
-      setCurrentCardIndex((prev) => (prev - 1 + totalCards) % totalCards);
+      const newIndex = currentCardIndex > 0 ? currentCardIndex - 1 : totalCards - 1;
+      setCurrentCardIndex(newIndex);
       if (isSoundOn) {
         const audio = new Audio("/card-shuffle.mp3");
         audio.play().catch(() => {});
@@ -63,7 +64,8 @@ export const CardContent = ({
   const handleNextCard = () => {
     if (setCurrentCardIndex) {
       setIsFlipped(false);
-      setCurrentCardIndex((prev) => (prev + 1) % totalCards);
+      const newIndex = (currentCardIndex + 1) % totalCards;
+      setCurrentCardIndex(newIndex);
       if (isSoundOn) {
         const audio = new Audio("/card-shuffle.mp3");
         audio.play().catch(() => {});

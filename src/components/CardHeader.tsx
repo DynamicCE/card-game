@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export const CardHeader = () => {
+interface CardHeaderProps {
+  onProfileClick: () => void;
+}
+
+export const CardHeader = ({ onProfileClick }: CardHeaderProps) => {
   const navigate = useNavigate();
 
   return (
@@ -19,6 +23,7 @@ export const CardHeader = () => {
       <Button
         variant="ghost"
         size="icon"
+        onClick={onProfileClick}
         className="text-primary hover:text-primary/80"
       >
         <User size={24} />
