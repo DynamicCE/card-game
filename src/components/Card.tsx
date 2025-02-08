@@ -66,6 +66,8 @@ export const Card = ({ category }: { category: string }) => {
   const [settings, setSettings] = useState(getStorageData().settings);
   const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
   
+  const categoryCards = cards[category] || [];
+
   const handleNextCard = () => {
     setIsFlipped(false);
     setCurrentCardIndex((prev) => (prev + 1) % categoryCards.length);
