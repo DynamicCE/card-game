@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { CardHeader } from "./CardHeader";
 import { CardContent } from "./CardContent";
@@ -111,7 +110,13 @@ const cards: Record<string, CardData[]> = {
   ],
 };
 
-export const Card = ({ category }: { category: string }) => {
+interface CardProps {
+  category: string;
+  onNextTurn?: () => void;
+  currentPlayer?: number;
+}
+
+export const Card = ({ category, onNextTurn, currentPlayer }: CardProps) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -138,11 +143,26 @@ export const Card = ({ category }: { category: string }) => {
     );
   }
 
+  const handleNextCard = () => {
+    if (onNextTurn) {
+      onNextTurn();
+    }
+    setCurrentCardIndex((prev) => (prev + 1) % categoryCards.length);
+    setIsFlipped(false);
+  };
+
   return (
     <Sheet open={isProfileOpen} onOpenChange={setIsProfileOpen}>
       <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col overflow-hidden">
         <CardHeader onProfileClick={() => setIsProfileOpen(true)} />
         <UserProfile purchasedCategories={purchasedCategories} />
+        {currentPlayer && (
+          <div className="text-center mb-4 animate-fade-in">
+            <span className="text-lg font-semibold text-primary">
+              Oyuncu {currentPlayer}
+            </span>
+          </div>
+        )}
         <div className="flex-1 flex flex-col items-center justify-center px-4">
           <CardContent
             noCards={false}
@@ -150,7 +170,7 @@ export const Card = ({ category }: { category: string }) => {
             isFlipped={isFlipped}
             setIsFlipped={setIsFlipped}
             currentCardIndex={currentCardIndex}
-            setCurrentCardIndex={setCurrentCardIndex}
+            setCurrentCardIndex={handleNextCard}
             totalCards={categoryCards.length}
             isSoundOn={isSoundOn}
           />

@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card as CardUI } from "@/components/ui/card";
 import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
@@ -81,23 +80,9 @@ export const CardContent = ({
     );
   }
 
-  const handlePrevCard = () => {
-    if (setCurrentCardIndex) {
-      setIsFlipped(false);
-      const newIndex = currentCardIndex > 0 ? currentCardIndex - 1 : totalCards - 1;
-      setCurrentCardIndex(newIndex);
-      if (isSoundOn) {
-        const audio = new Audio("/card-shuffle.mp3");
-        audio.play().catch(() => {});
-      }
-    }
-  };
-
   const handleNextCard = () => {
     if (setCurrentCardIndex) {
-      setIsFlipped(false);
-      const newIndex = (currentCardIndex + 1) % totalCards;
-      setCurrentCardIndex(newIndex);
+      setCurrentCardIndex(currentCardIndex);
       if (isSoundOn) {
         const audio = new Audio("/card-shuffle.mp3");
         audio.play().catch(() => {});
@@ -138,27 +123,13 @@ export const CardContent = ({
         </div>
       </div>
 
-      <div className="flex justify-between items-center w-full mt-8 px-4">
+      <div className="flex justify-center items-center w-full mt-8">
         <Button
-          variant="ghost"
-          size="lg"
-          onClick={handlePrevCard}
-          className="text-primary hover:text-primary/80 transition-colors"
-        >
-          <ArrowLeftCircle size={32} />
-        </Button>
-        
-        <span className="text-sm text-muted-foreground">
-          {currentCardIndex + 1} / {totalCards}
-        </span>
-        
-        <Button
-          variant="ghost"
           size="lg"
           onClick={handleNextCard}
-          className="text-primary hover:text-primary/80 transition-colors"
+          className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity px-8"
         >
-          <ArrowRightCircle size={32} />
+          Sıradaki Oyuncu
         </Button>
       </div>
       
