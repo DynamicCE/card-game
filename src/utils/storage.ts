@@ -1,10 +1,13 @@
+
 interface StorageData {
   purchasedCategories: string[];
-  settings: {
-    soundEffects: boolean;
-    notifications: boolean;
-    language: 'tr' | 'en';
-  };
+  settings: Settings;
+}
+
+export interface Settings {
+  soundEffects: boolean;
+  notifications: boolean;
+  language: 'tr' | 'en';
 }
 
 const STORAGE_KEY = 'do-or-drink-data';
@@ -28,8 +31,8 @@ export const setStorageData = (data: StorageData) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 };
 
-type SettingsKey = keyof StorageData['settings'];
-type SettingsValue<K extends SettingsKey> = StorageData['settings'][K];
+type SettingsKey = keyof Settings;
+type SettingsValue<K extends SettingsKey> = Settings[K];
 
 export const updateSettings = <K extends SettingsKey>(
   key: K,
