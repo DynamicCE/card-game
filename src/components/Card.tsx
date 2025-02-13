@@ -174,7 +174,6 @@ const cards: Record<string, CardData[]> = {
 
 export const Card = ({ category }: { category: string }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const categoryCards = cards[category] || [];
@@ -187,7 +186,6 @@ export const Card = ({ category }: { category: string }) => {
 
   useEffect(() => {
     setCurrentCardIndex(0);
-    setIsFlipped(false);
   }, [category]);
 
   if (!currentCard || categoryCards.length === 0) {
@@ -195,9 +193,7 @@ export const Card = ({ category }: { category: string }) => {
       <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col items-center justify-center">
         <CardContent 
           noCards={true} 
-          currentCard={null} 
-          isFlipped={isFlipped} 
-          setIsFlipped={setIsFlipped}
+          currentCard={null}
         />
       </div>
     );
@@ -214,8 +210,6 @@ export const Card = ({ category }: { category: string }) => {
           <CardContent
             noCards={false}
             currentCard={currentCard}
-            isFlipped={isFlipped}
-            setIsFlipped={setIsFlipped}
             currentCardIndex={currentCardIndex}
             setCurrentCardIndex={setCurrentCardIndex}
             totalCards={categoryCards.length}

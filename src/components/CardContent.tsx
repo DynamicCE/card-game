@@ -1,14 +1,10 @@
 import { Card as CardUI } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
-import { motion, useAnimation, PanInfo } from "framer-motion";
+import { motion, useAnimation, PanInfo, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 interface CardContentProps {
   noCards: boolean;
   currentCard: any;
-  isFlipped: boolean;
-  setIsFlipped: (value: boolean) => void;
   currentCardIndex?: number;
   setCurrentCardIndex?: (value: number) => void;
   totalCards?: number;
@@ -24,16 +20,15 @@ interface CardContentProps {
 export const CardContent = ({
   noCards,
   currentCard,
-  isFlipped,
-  setIsFlipped,
   currentCardIndex = 0,
   setCurrentCardIndex,
   totalCards = 0,
   isSoundOn = true,
   theme
 }: CardContentProps) => {
-  const controls = useAnimation();
   const [dragDirection, setDragDirection] = useState<string>("");
+  const [exitX, setExitX] = useState<number>(0);
+  const [exitY, setExitY] = useState<number>(0);
 
   const handleDragEnd = async (event: any, info: PanInfo) => {
     const swipeThreshold = 100;
@@ -44,22 +39,43 @@ export const CardContent = ({
       let direction = "";
       if (Math.abs(xOffset) > Math.abs(yOffset)) {
         direction = xOffset > 0 ? "right" : "left";
-        await controls.start({ 
-          x: xOffset > 0 ? 1000 : -1000,
-          opacity: 0,
-          transition: { duration: 0.5 }
-        });
+        setExitX(xOffset > 0 ? 1000 : -1000);
+        setExitY(0);
       } else {
         direction = yOffset > 0 ? "down" : "up";
-        await controls.start({ 
-          y: yOffset > 0 ? 1000 : -1000,
-          opacity: 0,
-          transition: { duration: 0.5 }
-        });
+        setExitX(0);
+        setExitY(yOffset > 0 ? 1000 : -1000);
       }
 
+      // Görsel geri bildirim efektleri
+      const feedback = document.createElement("div");
+      feedback.className = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl z-50 pointer-events-none";
+      feedback.style.animation = "feedbackPop 1s ease-out forwards";
+      
+      switch(direction) {
+        case "right":
+          feedback.textContent = "🍺";
+          break;
+        case "left":
+          feedback.textContent = "✅";
+          break;
+        case "up":
+          feedback.textContent = "⭐";
+          break;
+        case "down":
+          feedback.textContent = "🔄";
+          break;
+      }
+      
+      document.body.appendChild(feedback);
+      setTimeout(() => feedback.remove(), 1000);
+
       if (setCurrentCardIndex) {
-        setCurrentCardIndex(currentCardIndex + 1);
+        setTimeout(() => {
+          setCurrentCardIndex(currentCardIndex + 1);
+          setExitX(0);
+          setExitY(0);
+        }, 500);
       }
       
       if (isSoundOn) {
@@ -67,10 +83,9 @@ export const CardContent = ({
         audio.play().catch(() => {});
       }
 
-      controls.set({ x: 0, y: 0, opacity: 1 });
-      setDragDirection("");
     } else {
-      controls.start({ x: 0, y: 0, opacity: 1 });
+      setExitX(0);
+      setExitY(0);
     }
   };
 
@@ -97,93 +112,113 @@ export const CardContent = ({
 
   return (
     <div className="relative w-full aspect-[3/4]">
-      <motion.div
-        drag
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={0.9}
-        onDragEnd={handleDragEnd}
-        onDrag={handleDrag}
-        animate={controls}
-        className="absolute inset-0 touch-none cursor-grab active:cursor-grabbing"
-        style={{
-          perspective: 1000
-        }}
-      >
-        <div 
-          className={`w-full h-full transition-transform duration-500 ${
-            isFlipped ? 'rotate-y-180' : ''
-          }`}
-          style={{
-            transformStyle: 'preserve-3d'
+      <style>
+        {`
+          @keyframes feedbackPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+          }
+        `}
+      </style>
+      <AnimatePresence>
+        <motion.div
+          key={currentCardIndex}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ 
+            scale: 1, 
+            opacity: 1,
+            x: 0,
+            y: 0,
+            rotate: 0,
+            transition: { duration: 0.3 }
           }}
-          onClick={() => setIsFlipped(!isFlipped)}
+          exit={{ 
+            x: exitX,
+            y: exitY,
+            opacity: 0,
+            transition: { duration: 0.3 }
+          }}
+          drag
+          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+          dragElastic={0.9}
+          onDragEnd={handleDragEnd}
+          onDrag={handleDrag}
+          className="absolute inset-0 touch-none cursor-grab active:cursor-grabbing"
         >
-          {/* Ön yüz */}
-          <div 
-            className="absolute w-full h-full"
-            style={{ backfaceVisibility: 'hidden' }}
+          <CardUI 
+            className={`w-full h-full bg-gradient-to-br ${theme?.gradient || 'from-primary via-secondary to-primary'} 
+              ${theme?.border} ${theme?.glow} shadow-xl transition-all duration-300
+              ${dragDirection === "right" ? "border-red-500 border-4 shadow-lg shadow-red-500/50" : ""}
+              ${dragDirection === "left" ? "border-green-500 border-4 shadow-lg shadow-green-500/50" : ""}
+              ${dragDirection === "up" ? "border-yellow-500 border-4 shadow-lg shadow-yellow-500/50" : ""}
+              ${dragDirection === "down" ? "border-blue-500 border-4 shadow-lg shadow-blue-500/50" : ""}`}
           >
-            <CardUI 
-              className={`w-full h-full bg-gradient-to-br ${theme?.gradient || 'from-primary via-secondary to-primary'} 
-                ${theme?.border} ${theme?.glow} shadow-xl transition-all duration-300
-                ${dragDirection === "right" ? "border-red-500 border-4" : ""}
-                ${dragDirection === "left" ? "border-green-500 border-4" : ""}
-                ${dragDirection === "up" ? "border-yellow-500 border-4" : ""}`}
-            >
-              <div className="w-full h-full flex flex-col items-center justify-center p-4">
-                <span className="text-6xl mb-4">{theme?.icon}</span>
-                <p className="text-4xl font-bold text-white text-center">
-                  Do or Drink
-                </p>
-                {currentCard.timeLimit && (
-                  <p className="mt-4 text-sm text-white/80">
-                    ⏱️ {currentCard.timeLimit} saniye
-                  </p>
-                )}
-                {dragDirection && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-bold"
-                  >
-                    {dragDirection === "right" && "🍺 İçerim!"}
-                    {dragDirection === "left" && "✅ Yaparım!"}
-                    {dragDirection === "up" && "⭐ Favori!"}
-                    {dragDirection === "down" && "🔄 Alternatif"}
-                  </motion.div>
-                )}
+            <div className="w-full h-full flex flex-col items-center justify-between p-8">
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
+                <span className="text-4xl">{theme?.icon}</span>
               </div>
-            </CardUI>
-          </div>
-
-          {/* Arka yüz */}
-          <div 
-            className="absolute w-full h-full"
-            style={{ 
-              backfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)'
-            }}
-          >
-            <CardUI className={`w-full h-full bg-gradient-to-br ${theme?.gradient || 'from-accent via-accent/90 to-accent'} ${theme?.border} ${theme?.glow} shadow-xl`}>
-              <div className="w-full h-full flex flex-col items-center justify-center p-8">
-                <p className="text-2xl font-bold text-white text-center">
+              
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <p className="text-2xl font-bold text-white text-center mb-4">
                   {currentCard.content}
                 </p>
                 {currentCard.alternativeTask && (
-                  <p className="mt-4 text-sm text-white/80">
-                    Alternatif: {currentCard.alternativeTask}
+                  <p className="mt-2 text-sm text-white/80">
+                    🔄 Alternatif: {currentCard.alternativeTask}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex flex-col items-center gap-2">
+                {currentCard.timeLimit && (
+                  <p className="text-sm text-white/80">
+                    ⏱️ {currentCard.timeLimit} saniye
                   </p>
                 )}
                 {currentCard.requiresProps && (
-                  <p className="mt-2 text-sm text-white/80">
+                  <p className="text-sm text-white/80">
                     📱 Telefon gerekli
                   </p>
                 )}
               </div>
-            </CardUI>
-          </div>
-        </div>
-      </motion.div>
+
+              {dragDirection && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5, y: dragDirection === "up" ? 20 : dragDirection === "down" ? -20 : 0, x: dragDirection === "left" ? 20 : dragDirection === "right" ? -20 : 0 }}
+                  animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-bold text-white"
+                >
+                  {dragDirection === "right" && (
+                    <div className="flex flex-col items-center">
+                      <span className="text-6xl mb-2">🍺</span>
+                      <span className="text-2xl">İçerim!</span>
+                    </div>
+                  )}
+                  {dragDirection === "left" && (
+                    <div className="flex flex-col items-center">
+                      <span className="text-6xl mb-2">✅</span>
+                      <span className="text-2xl">Yaparım!</span>
+                    </div>
+                  )}
+                  {dragDirection === "up" && (
+                    <div className="flex flex-col items-center">
+                      <span className="text-6xl mb-2">⭐</span>
+                      <span className="text-2xl">Favori!</span>
+                    </div>
+                  )}
+                  {dragDirection === "down" && (
+                    <div className="flex flex-col items-center">
+                      <span className="text-6xl mb-2">🔄</span>
+                      <span className="text-2xl">Alternatif</span>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </div>
+          </CardUI>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
