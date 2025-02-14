@@ -1,20 +1,25 @@
 import { CardAnimation } from "./card/CardAnimation";
 import { CardBody } from "./card/CardBody";
 import { CardFeedback } from "./card/CardFeedback";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { Category } from "./card/CardBody";
+
+interface CardData {
+  id: string;
+  content: string;
+  category: Category;
+  alternativeTask?: string;
+  timeLimit?: number;
+}
 
 interface CardContentProps {
   noCards: boolean;
-  currentCard: any;
+  currentCard: CardData | null;
   currentCardIndex?: number;
   setCurrentCardIndex?: (value: number) => void;
   totalCards?: number;
   isSoundOn?: boolean;
-  theme?: {
-    gradient: string;
-    border: string;
-    glow: string;
-    icon: string;
-  };
 }
 
 export const CardContent = ({
@@ -24,14 +29,21 @@ export const CardContent = ({
   setCurrentCardIndex,
   totalCards = 0,
   isSoundOn = true,
-  theme
 }: CardContentProps) => {
+  const navigate = useNavigate();
+
   if (noCards) {
     return (
       <div className="text-center p-4">
         <p className="text-lg font-medium text-muted-foreground">
           Bu kategoride kart bulunmamaktadır.
         </p>
+        <Button 
+          className="mt-4"
+          onClick={() => navigate('/')}
+        >
+          Ana Sayfaya Dön
+        </Button>
       </div>
     );
   }
@@ -46,11 +58,10 @@ export const CardContent = ({
         {(dragDirection: string) => (
           <>
             <CardBody
-              content={currentCard.content}
-              alternativeTask={currentCard.alternativeTask}
-              timeLimit={currentCard.timeLimit}
-              requiresProps={currentCard.requiresProps}
-              theme={theme}
+              content={currentCard?.content || ""}
+              alternativeTask={currentCard?.alternativeTask}
+              timeLimit={currentCard?.timeLimit}
+              category={currentCard?.category || "friends_fun"}
               dragDirection={dragDirection}
             />
             <CardFeedback dragDirection={dragDirection} />
