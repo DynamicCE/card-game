@@ -220,4 +220,4 @@ export const Card = ({ category }: { category: string }) => {
       </div>
     </Sheet>
   );
-};
+}; 
