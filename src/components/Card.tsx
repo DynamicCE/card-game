@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { CardHeader } from "./CardHeader";
 import { CardContent } from "./CardContent";
@@ -144,7 +145,11 @@ const cards: Record<Category, CardData[]> = {
   ]
 };
 
-export const Card = ({ category }: { category: Category }) => {
+interface CardProps {
+  category: Category;
+}
+
+export const Card = ({ category }: CardProps) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);

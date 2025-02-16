@@ -70,13 +70,11 @@ export const CardBody = ({
       <div className={`absolute inset-0 ${theme.overlay}`} />
       
       <div className="relative w-full h-full flex flex-col items-center justify-between p-8">
-        {/* Üst Kısım */}
         <div className="flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-md
           border border-white/20 shadow-inner">
           <span className="text-5xl filter drop-shadow-lg">{theme.icon}</span>
         </div>
         
-        {/* Orta Kısım */}
         <div className="flex-1 flex flex-col items-center justify-center px-4">
           <div className="backdrop-blur-sm bg-white/5 rounded-xl p-6 border border-white/10">
             <p className={`text-2xl font-bold ${theme.text} text-center leading-relaxed
@@ -86,7 +84,6 @@ export const CardBody = ({
           </div>
         </div>
 
-        {/* Alt Kısım */}
         <div className="text-sm text-white/70 backdrop-blur-sm bg-white/5 px-4 py-2 rounded-full">
           Kaydır veya Dokun
         </div>
