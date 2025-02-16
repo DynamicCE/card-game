@@ -9,8 +9,6 @@ interface CardData {
   id: string;
   content: string;
   category: Category;
-  alternativeTask?: string;
-  timeLimit?: number;
 }
 
 interface CardContentProps {
@@ -32,6 +30,10 @@ export const CardContent = ({
 }: CardContentProps) => {
   const navigate = useNavigate();
 
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
   if (noCards) {
     return (
       <div className="text-center p-4">
@@ -40,7 +42,7 @@ export const CardContent = ({
         </p>
         <Button 
           className="mt-4"
-          onClick={() => navigate('/')}
+          onClick={handleHomeClick}
         >
           Ana Sayfaya Dön
         </Button>
@@ -59,8 +61,6 @@ export const CardContent = ({
           <>
             <CardBody
               content={currentCard?.content || ""}
-              alternativeTask={currentCard?.alternativeTask}
-              timeLimit={currentCard?.timeLimit}
               category={currentCard?.category || "friends_fun"}
               dragDirection={dragDirection}
             />

@@ -35,16 +35,12 @@ const cardThemes = {
 
 interface CardBodyProps {
   content: string;
-  alternativeTask?: string;
-  timeLimit?: number;
   category: Category;
   dragDirection: string;
 }
 
 export const CardBody = ({
   content,
-  alternativeTask,
-  timeLimit,
   category,
   dragDirection
 }: CardBodyProps) => {
@@ -68,20 +64,7 @@ export const CardBody = ({
           <p className={`text-2xl font-bold ${theme.text} text-center mb-4`}>
             {content}
           </p>
-          {alternativeTask && (
-            <p className={`mt-2 text-sm ${theme.text} opacity-80`}>
-              🔄 Alternatif: {alternativeTask}
-            </p>
-          )}
         </div>
-
-        {timeLimit && (
-          <div className="flex flex-col items-center gap-2">
-            <p className={`text-sm ${theme.text} opacity-80`}>
-              ⏱️ {timeLimit} saniye
-            </p>
-          </div>
-        )}
       </div>
     </CardUI>
   );

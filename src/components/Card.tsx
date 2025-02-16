@@ -11,8 +11,6 @@ interface CardData {
   id: string;
   content: string;
   category: Category;
-  alternativeTask?: string;
-  timeLimit?: number;
 }
 
 const cards: Record<Category, CardData[]> = {
@@ -20,8 +18,7 @@ const cards: Record<Category, CardData[]> = {
     { 
       id: "1", 
       content: "Gruptaki herkes sırayla en komik anısını anlatsın", 
-      category: "friends_fun",
-      timeLimit: 30
+      category: "friends_fun"
     },
     { 
       id: "2", 
@@ -31,92 +28,118 @@ const cards: Record<Category, CardData[]> = {
     { 
       id: "3", 
       content: "Gruptaki birinin telefonundan rastgele bir fotoğraf seç ve hikayesini anlat", 
-      category: "friends_fun",
-      timeLimit: 45
+      category: "friends_fun"
     },
     { 
       id: "4", 
       content: "Sessiz sinema oyna: Rastgele bir film seç", 
-      category: "friends_fun",
-      timeLimit: 60,
-      alternativeTask: "Bir şarkı mırıldan, grup tahmin etsin"
+      category: "friends_fun"
+    },
+    { 
+      id: "5", 
+      content: "En sevdiğin şarkıyı söyle, grup eşlik etsin", 
+      category: "friends_fun"
+    },
+    { 
+      id: "6", 
+      content: "Gruptaki herkesi tek kelimeyle tarif et", 
+      category: "friends_fun"
     }
   ],
   friends_flirty: [
     { 
-      id: "5", 
+      id: "7", 
       content: "Gruptaki birine en güzel kompliman yap", 
       category: "friends_flirty"
     },
     { 
-      id: "6", 
-      content: "Karşı cinsteki birinin gözlerine 30 saniye bak", 
-      category: "friends_flirty",
-      timeLimit: 30,
-      alternativeTask: "En çekici bulduğun kişiye iltifat et"
-    },
-    { 
-      id: "7", 
-      content: "Sağındaki kişiyle dans et", 
-      category: "friends_flirty",
-      timeLimit: 45
-    },
-    { 
       id: "8", 
+      content: "Karşı cinsteki birinin gözlerine bak", 
+      category: "friends_flirty"
+    },
+    { 
+      id: "9", 
+      content: "Sağındaki kişiyle dans et", 
+      category: "friends_flirty"
+    },
+    { 
+      id: "10", 
       content: "Gruptaki birine flörtöz bir mesaj at", 
+      category: "friends_flirty"
+    },
+    { 
+      id: "11", 
+      content: "En çekici bulduğun kişiye sarıl", 
+      category: "friends_flirty"
+    },
+    { 
+      id: "12", 
+      content: "Gruptaki birinin dudağına yakın bir yerden öp", 
       category: "friends_flirty"
     }
   ],
   couples_fun: [
     { 
-      id: "9", 
-      content: "Partnerinle rol değiştir: 2 dakika boyunca o sen, sen o ol", 
-      category: "couples_fun",
-      timeLimit: 120
+      id: "13", 
+      content: "Partnerinle rol değiştir: O sen, sen o ol", 
+      category: "couples_fun"
     },
     { 
-      id: "10", 
+      id: "14", 
       content: "Partnerin gözleri kapalıyken ona üç şey koklat, tahmin etmeli", 
-      category: "couples_fun",
-      alternativeTask: "Üç şey tattır"
+      category: "couples_fun"
     },
     { 
-      id: "11", 
+      id: "15", 
       content: "Partnerin için komik bir dans performansı sergile", 
-      category: "couples_fun",
-      timeLimit: 30
+      category: "couples_fun"
     },
     { 
-      id: "12", 
+      id: "16", 
       content: "Partnerinle sırt sırta otur, sorulara aynı anda cevap verin", 
-      category: "couples_fun",
-      timeLimit: 60
+      category: "couples_fun"
+    },
+    { 
+      id: "17", 
+      content: "Partnerine en sevdiğin özelliğini söyle", 
+      category: "couples_fun"
+    },
+    { 
+      id: "18", 
+      content: "Partnerinle birlikte komik bir fotoğraf çekin", 
+      category: "couples_fun"
     }
   ],
   couples_spicy: [
     { 
-      id: "13", 
+      id: "19", 
       content: "Partnerine romantik bir masaj yap", 
-      category: "couples_spicy",
-      timeLimit: 180
+      category: "couples_spicy"
     },
     { 
-      id: "14", 
+      id: "20", 
       content: "Partnerinin kulağına en romantik anınızı fısılda", 
       category: "couples_spicy"
     },
     { 
-      id: "15", 
+      id: "21", 
       content: "Gözleri kapalı partnerinin yüzünün her yerini öp", 
-      category: "couples_spicy",
-      timeLimit: 45
+      category: "couples_spicy"
     },
     { 
-      id: "16", 
+      id: "22", 
       content: "Partnerinle yavaş dans edin", 
-      category: "couples_spicy",
-      timeLimit: 120,
-      alternativeTask: "Sarılarak müzik dinleyin"
+      category: "couples_spicy"
+    },
+    { 
+      id: "23", 
+      content: "Partnerinin boynunu nazikçe öp", 
+      category: "couples_spicy"
+    },
+    { 
+      id: "24", 
+      content: "Partnerine en çok sevdiğin fiziksel özelliğini söyle", 
+      category: "couples_spicy"
     }
   ]
 };
