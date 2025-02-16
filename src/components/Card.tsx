@@ -155,7 +155,9 @@ export const Card = ({ category }: CardProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const categoryCards = cards[category] || [];
   const currentCard = categoryCards[currentCardIndex];
-  const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
+  const purchasedCategories = categories
+    .filter(cat => isPurchased(cat.id))
+    .map(cat => cat.id as Category);
 
   useEffect(() => {
     setCurrentCardIndex(0);
