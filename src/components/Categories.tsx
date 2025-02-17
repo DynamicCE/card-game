@@ -1,4 +1,3 @@
-
 import { Category } from "./card/CardBody";
 
 export const categories = [

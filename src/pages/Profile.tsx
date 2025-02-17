@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -62,7 +61,7 @@ const Profile = () => {
                   {purchasedCategories.map(category => (
                     <div key={category.id} className="flex items-center gap-2 p-2 bg-secondary/10 rounded-lg">
                       {category.icon}
-                      <span>{category.title}</span>
+                      <span>{category.name}</span>
                     </div>
                   ))}
                 </div>

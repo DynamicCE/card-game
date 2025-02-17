@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { CardHeader } from "./CardHeader";
 import { CardContent } from "./CardContent";
@@ -145,19 +144,13 @@ const cards: Record<Category, CardData[]> = {
   ]
 };
 
-interface CardProps {
-  category: Category;
-}
-
-export const Card = ({ category }: CardProps) => {
+export const Card = ({ category }: { category: Category }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const categoryCards = cards[category] || [];
   const currentCard = categoryCards[currentCardIndex];
-  const purchasedCategories = categories
-    .filter(cat => isPurchased(cat.id))
-    .map(cat => cat.id as Category);
+  const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
 
   useEffect(() => {
     setCurrentCardIndex(0);

@@ -1,17 +1,15 @@
-
 import { useState } from "react";
 import { Card } from "@/components/Card";
 import { Categories } from "@/components/Categories";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { Category } from "@/components/card/CardBody";
 
 const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category>("friends_fun");
+  const [selectedCategory, setSelectedCategory] = useState("basic");
 
-  const handleCategorySelect = (category: Category) => {
+  const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
     setShowCategories(false);
     setIsPlaying(true);
