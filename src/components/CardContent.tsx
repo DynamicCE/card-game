@@ -63,6 +63,7 @@ export const CardContent = ({
               content={currentCard?.content || ""}
               category={currentCard?.category || "friends_fun"}
               dragDirection={dragDirection}
+              isFirstCard={currentCardIndex === 0}
             />
             <CardFeedback dragDirection={dragDirection} />
           </>
