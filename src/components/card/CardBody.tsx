@@ -69,8 +69,14 @@ export const CardBody = ({
         </div>
 
         {isFirstCard && (
-          <div className="text-sm text-white/30 flex items-center gap-2">
-            kaydır <span className="text-lg">→</span>
+          <div className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10
+            flex items-center gap-3 animate-pulse">
+            <span className="text-sm font-medium tracking-wide text-white/50">
+              kaydır
+            </span>
+            <span className="text-lg text-white/50 animate-bounce-x">
+              →
+            </span>
           </div>
         )}
       </div>
