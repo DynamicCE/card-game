@@ -64,11 +64,12 @@ export const CardBody = ({
       
       <div className="relative w-full h-full flex flex-col items-center justify-between p-8">
         <div className={`flex items-center justify-center w-24 h-24 rounded-full 
-          ${category === 'couples_spicy' ? 'bg-white/30' : 'bg-white/20'} 
-          backdrop-blur-md border border-white/30 shadow-inner`}>
+          ${category === 'couples_spicy' ? 'bg-gradient-to-br from-white/40 to-white/20' : 'bg-white/20'} 
+          backdrop-blur-md border border-white/40 shadow-inner
+          ${category === 'couples_spicy' ? 'shadow-lg shadow-white/20' : ''}`}>
           <span className={`${category === 'couples_spicy' ? 'text-6xl' : 'text-5xl'} 
-            filter drop-shadow-lg animate-pulse 
-            ${category === 'couples_spicy' ? 'drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]' : ''}`}>
+            filter drop-shadow-lg
+            ${category === 'couples_spicy' ? 'animate-pulse-fast drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]' : 'animate-pulse'}`}>
             {theme.icon}
           </span>
         </div>
