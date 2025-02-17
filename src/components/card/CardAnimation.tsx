@@ -1,4 +1,3 @@
-
 import { motion, PanInfo, AnimatePresence } from "framer-motion";
 import { ReactNode, useState } from "react";
 
@@ -83,29 +82,45 @@ export const CardAnimation = ({
     <AnimatePresence mode="wait">
       <motion.div
         key={currentCardIndex}
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ 
           scale: 1, 
           opacity: 1,
-          x: 0,
           y: 0,
           rotate: 0,
-          transition: { duration: 0.3, ease: "easeOut" }
+          transition: { 
+            duration: 0.3,
+            ease: [0.4, 0, 0.2, 1],
+            scale: { duration: 0.25 },
+            opacity: { duration: 0.2 }
+          }
         }}
         exit={{ 
           x: exitX,
           y: exitY,
           opacity: 0,
-          scale: 0.8,
-          transition: { duration: 0.3, ease: "easeIn" }
+          scale: 0.95,
+          rotate: exitX ? (exitX > 0 ? 15 : -15) : (exitY > 0 ? -10 : 10),
+          transition: { 
+            duration: 0.2,
+            ease: [0.4, 0, 1, 1]
+          }
         }}
         drag
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.7}
         onDragEnd={handleDragEnd}
         onDrag={handleDrag}
-        className="absolute inset-0 touch-none cursor-grab active:cursor-grabbing"
-        whileDrag={{ scale: 1.02 }}
+        className="absolute inset-0 touch-none cursor-grab active:cursor-grabbing will-change-transform"
+        whileDrag={{ 
+          scale: 1.02,
+          rotate: dragDirection === "right" ? 5 : dragDirection === "left" ? -5 : 0,
+          transition: { duration: 0.1 }
+        }}
+        whileHover={{ 
+          scale: 1.02,
+          transition: { duration: 0.2 }
+        }}
       >
         {children(dragDirection)}
       </motion.div>

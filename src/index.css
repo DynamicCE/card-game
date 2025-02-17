@@ -46,6 +46,10 @@
   .animate-bounce-x {
     animation: bounce-x 1s infinite;
   }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 
 @keyframes bounce-x {
@@ -56,6 +60,15 @@
   50% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
   }
 }
 
