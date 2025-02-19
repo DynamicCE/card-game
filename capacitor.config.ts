@@ -1,12 +1,23 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'dev.lovable.dodrink91a71645',
+  appId: 'com.doordrink.app',
   appName: 'Do or Drink',
   webDir: 'dist',
-  server: {
-    url: 'https://91a71645-3923-446f-920a-c560eb1976df.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+  bundledWebRuntime: false,
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: "#1f2937",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+    }
+  },
+  android: {
+    buildOptions: {
+      keystorePath: 'release-key.keystore',
+      keystoreAlias: 'key0',
+    }
   }
 };
 
