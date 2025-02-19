@@ -20,16 +20,11 @@ export const CardAnimation = ({
 
   const playCardSound = async () => {
     if (isSoundOn) {
-      const audio = new Audio("/card-shuffle.mp3");
+      const audio = new Audio("/sounds/cardsound.wav");
       audio.volume = 0.5; // Ses seviyesini azalt
-      await audio.play().catch(() => {});
-      
-      // 200ms sonra swoosh sesi çal
-      setTimeout(() => {
-        const swoosh = new Audio("/swoosh.mp3");
-        swoosh.volume = 0.3;
-        swoosh.play().catch(() => {});
-      }, 200);
+      await audio.play().catch((error) => {
+        console.error("Ses çalma hatası:", error);
+      });
     }
   };
 
