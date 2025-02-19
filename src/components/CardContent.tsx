@@ -18,6 +18,7 @@ interface CardContentProps {
   setCurrentCardIndex?: (value: number) => void;
   totalCards?: number;
   isSoundOn?: boolean;
+  onBack: () => void;
 }
 
 export const CardContent = ({
@@ -27,6 +28,7 @@ export const CardContent = ({
   setCurrentCardIndex,
   totalCards = 0,
   isSoundOn = true,
+  onBack
 }: CardContentProps) => {
   const navigate = useNavigate();
 
@@ -42,7 +44,7 @@ export const CardContent = ({
         </p>
         <Button 
           className="mt-4"
-          onClick={handleHomeClick}
+          onClick={onBack}
         >
           Ana Sayfaya Dön
         </Button>
@@ -56,6 +58,7 @@ export const CardContent = ({
         currentCardIndex={currentCardIndex}
         setCurrentCardIndex={setCurrentCardIndex}
         isSoundOn={isSoundOn}
+        category={currentCard?.category || "friends_fun"}
       >
         {(dragDirection: string) => (
           <>

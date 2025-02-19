@@ -7,6 +7,11 @@ import { isPurchased } from "@/utils/storage";
 import { Sheet } from "@/components/ui/sheet";
 import { Category } from "./card/CardBody";
 
+interface CardProps {
+  category: Category;
+  onBack: () => void;
+}
+
 interface CardData {
   id: string;
   content: string;
@@ -144,7 +149,7 @@ const cards: Record<Category, CardData[]> = {
   ]
 };
 
-export const Card = ({ category }: { category: Category }) => {
+export const Card = ({ category, onBack }: CardProps) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -162,6 +167,7 @@ export const Card = ({ category }: { category: Category }) => {
         <CardContent 
           noCards={true} 
           currentCard={null}
+          onBack={onBack}
         />
       </div>
     );
@@ -180,6 +186,7 @@ export const Card = ({ category }: { category: Category }) => {
             setCurrentCardIndex={setCurrentCardIndex}
             totalCards={categoryCards.length}
             isSoundOn={isSoundOn}
+            onBack={onBack}
           />
         </div>
       </div>

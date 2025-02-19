@@ -1,10 +1,12 @@
 import { motion, PanInfo, AnimatePresence } from "framer-motion";
 import { ReactNode, useState } from "react";
+import { Category } from "./CardBody";
 
 interface CardAnimationProps {
   currentCardIndex: number;
   setCurrentCardIndex?: (value: number) => void;
   isSoundOn?: boolean;
+  category: Category;
   children: (dragDirection: string) => ReactNode;
 }
 
@@ -12,6 +14,7 @@ export const CardAnimation = ({
   currentCardIndex,
   setCurrentCardIndex,
   isSoundOn = true,
+  category,
   children
 }: CardAnimationProps) => {
   const [dragDirection, setDragDirection] = useState<string>("");

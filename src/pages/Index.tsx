@@ -16,24 +16,23 @@ const Index = () => {
     setIsPlaying(true);
   };
 
+  const handleBack = () => {
+    setIsPlaying(false);
+    setShowCategories(false);
+  };
+
   return (
     <div className="min-h-screen w-full bg-background text-white flex flex-col">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4 py-6 flex flex-col">
-        <div className="flex justify-between items-center mb-8">
-          {(isPlaying || showCategories) && (
-            <Button 
-              variant="ghost" 
-              onClick={() => {
-                setIsPlaying(false);
-                setShowCategories(false);
-              }}
-              className="flex items-center gap-2 animate-fade-in"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Geri
-            </Button>
-          )}
-        </div>
+        <Button 
+          variant="ghost" 
+          onClick={handleBack}
+          className="w-fit flex items-center gap-2 animate-fade-in mb-8"
+          style={{ display: isPlaying || showCategories ? 'flex' : 'none' }}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Geri
+        </Button>
 
         <div className="flex-1 flex flex-col items-center justify-center">
           {!isPlaying && !showCategories ? (
@@ -66,7 +65,7 @@ const Index = () => {
             </div>
           ) : (
             <div className="w-full animate-fade-in">
-              <Card category={selectedCategory} />
+              <Card category={selectedCategory} onBack={handleBack} />
             </div>
           )}
         </div>
