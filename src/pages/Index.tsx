@@ -3,13 +3,14 @@ import { Card } from "@/components/Card";
 import { Categories } from "@/components/Categories";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Category } from "@/components/card/CardBody";
 
 const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("basic");
+  const [selectedCategory, setSelectedCategory] = useState<Category>("friends_fun");
 
-  const handleCategorySelect = (category: string) => {
+  const handleCategorySelect = (category: Category) => {
     setSelectedCategory(category);
     setShowCategories(false);
     setIsPlaying(true);
@@ -48,7 +49,10 @@ const Index = () => {
                   Kategori Seç
                 </Button>
                 <Button
-                  onClick={() => setIsPlaying(true)}
+                  onClick={() => {
+                    setSelectedCategory("friends_fun");
+                    setIsPlaying(true);
+                  }}
                   variant="outline"
                   className="w-full px-8 py-6 rounded-lg text-lg hover:bg-primary/10 transition-colors"
                 >
@@ -58,7 +62,7 @@ const Index = () => {
             </div>
           ) : showCategories ? (
             <div className="w-full animate-fade-in">
-              <Categories onSelectCategory={handleCategorySelect} />
+              <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
             </div>
           ) : (
             <div className="w-full animate-fade-in">
