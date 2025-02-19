@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Card } from "@/components/Card";
 import { Categories } from "@/components/Categories";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import { Category } from "@/components/card/CardBody";
 
 const Index = () => {
@@ -17,23 +16,17 @@ const Index = () => {
   };
 
   const handleBack = () => {
-    setIsPlaying(false);
-    setShowCategories(false);
+    if (isPlaying) {
+      setIsPlaying(false);
+    }
+    if (showCategories) {
+      setShowCategories(false);
+    }
   };
 
   return (
     <div className="min-h-screen w-full bg-background text-white flex flex-col">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4 py-6 flex flex-col">
-        <Button 
-          variant="ghost" 
-          onClick={handleBack}
-          className="w-fit flex items-center gap-2 animate-fade-in mb-8"
-          style={{ display: isPlaying || showCategories ? 'flex' : 'none' }}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Geri
-        </Button>
-
         <div className="flex-1 flex flex-col items-center justify-center">
           {!isPlaying && !showCategories ? (
             <div className="text-center animate-fade-in w-full max-w-md">

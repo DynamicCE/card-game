@@ -1,21 +1,18 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 interface CardHeaderProps {
   onProfileClick: () => void;
+  onBack: () => void;
 }
 
-export const CardHeader = ({ onProfileClick }: CardHeaderProps) => {
-  const navigate = useNavigate();
-
+export const CardHeader = ({ onProfileClick, onBack }: CardHeaderProps) => {
   return (
     <div className="flex justify-between items-center p-4">
       <Button 
         variant="ghost" 
         size="icon"
-        onClick={() => navigate('/')}
+        onClick={onBack}
         className="text-primary hover:text-primary/80"
       >
         <ArrowLeft size={24} />

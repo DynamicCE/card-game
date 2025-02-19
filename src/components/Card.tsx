@@ -176,7 +176,7 @@ export const Card = ({ category, onBack }: CardProps) => {
   return (
     <Sheet open={isProfileOpen} onOpenChange={setIsProfileOpen}>
       <div className="fixed inset-0 w-full h-full max-w-md mx-auto flex flex-col overflow-hidden">
-        <CardHeader onProfileClick={() => setIsProfileOpen(true)} />
+        <CardHeader onProfileClick={() => setIsProfileOpen(true)} onBack={onBack} />
         <UserProfile purchasedCategories={purchasedCategories} />
         <div className="flex-1 flex flex-col items-center justify-center px-4">
           <CardContent
