@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { GameType, GameMode } from '../types/game';
 import type { Player } from '../types/game';
 import SeatingArrangement from '../components/seating/SeatingArrangement';
+import './GameSetup.css';
+import '../components/seating/SeatingArrangement.css';
 
 const GameSetup: React.FC = () => {
     const navigate = useNavigate();
