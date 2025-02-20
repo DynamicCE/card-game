@@ -1,0 +1,51 @@
+.seating-arrangement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.table {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.seat {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.seat:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.seat.occupied {
+    background-color: #4CAF50 !important;
+    color: white;
+}
+
+.player-list {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.player-item {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    cursor: move;
+    transition: all 0.2s ease;
+}
+
+.player-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.player-item.dragging {
+    opacity: 0.5;
+} 
