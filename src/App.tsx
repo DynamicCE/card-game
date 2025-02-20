@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import GameSetup from "./pages/GameSetup";
+import Game from "./pages/Game";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setup" element={<GameSetup />} />
+          <Route path="/game" element={<Game />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

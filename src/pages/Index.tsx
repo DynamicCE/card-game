@@ -15,7 +15,19 @@ const Index = () => {
   const handleCategorySelect = (category: Category) => {
     setSelectedCategory(category);
     setShowCategories(false);
-    setShowGameModeButtons(true);
+    
+    // Çiftler kategorisi için direkt oyuna başla
+    if (category.startsWith('couples_')) {
+      navigate('/game', { 
+        state: { 
+          category,
+          gameMode: GameMode.QUICK_PLAY 
+        }
+      });
+    } else {
+      // Arkadaş kategorileri için mod seçimi göster
+      setShowGameModeButtons(true);
+    }
   };
 
   const handleBack = () => {
@@ -36,12 +48,26 @@ const Index = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
                 Do or Drink
               </h1>
-              <Button
-                onClick={() => setShowCategories(true)}
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity text-white px-8 py-6 rounded-lg text-lg"
-              >
-                Oyuna Başla
-              </Button>
+              <div className="space-y-4">
+                <Button
+                  onClick={() => setShowCategories(true)}
+                  className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity text-white px-8 py-6 rounded-lg text-lg"
+                >
+                  Kategori Seç
+                </Button>
+                <Button
+                  onClick={() => navigate('/game', { 
+                    state: { 
+                      category: 'friends_fun',
+                      gameMode: GameMode.QUICK_PLAY 
+                    }
+                  })}
+                  variant="outline"
+                  className="w-full px-8 py-6 rounded-lg text-lg hover:bg-primary/10 transition-colors"
+                >
+                  Hızlı Başla
+                </Button>
+              </div>
             </div>
           ) : showCategories ? (
             <div className="w-full animate-fade-in">
