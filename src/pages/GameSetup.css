@@ -1,90 +1,117 @@
 .game-setup {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
 }
 
 .game-setup h1 {
     text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-}
-
-.game-type-selection,
-.game-mode-selection {
-    margin-bottom: 30px;
-}
-
-.game-type-selection h2,
-.game-mode-selection h2 {
-    color: #666;
+    color: #fff;
     margin-bottom: 10px;
 }
 
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+.setup-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
 }
 
 .player-input {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
-.player-input input {
+.player-input h2 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group input {
+    flex: 1;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 5px;
-    margin-right: 10px;
+    background: #1a1a1a;
+    color: #fff;
     font-size: 16px;
 }
 
-.player-input button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+.input-group input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.add-button {
+    background: linear-gradient(to right, #4CAF50, #45a049);
     color: white;
     border: none;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    transition: opacity 0.2s;
 }
 
-.player-input button:hover {
-    background-color: #45a049;
+.add-button:hover {
+    opacity: 0.9;
 }
 
-.player-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.players-list {
     margin-bottom: 30px;
+}
+
+.players-list h2 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.2em;
 }
 
 .player-item {
     display: flex;
     align-items: center;
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    border-radius: 20px;
+    padding: 10px;
+    background: #1a1a1a;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-.player-item button {
-    margin-left: 10px;
+.player-number {
+    color: #666;
+    margin-right: 10px;
+    min-width: 30px;
+}
+
+.player-name {
+    flex: 1;
+    color: #fff;
+}
+
+.remove-button {
+    color: #ff4444;
     background: none;
     border: none;
-    color: #ff4444;
     cursor: pointer;
-    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 16px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.remove-button:hover {
+    opacity: 1;
 }
 
 .start-game {
     display: block;
-    width: 200px;
+    width: 100%;
+    max-width: 300px;
     margin: 30px auto;
     padding: 15px 30px;
-    background-color: #4CAF50;
+    background: linear-gradient(to right, #4CAF50, #45a049);
     color: white;
     border: none;
     border-radius: 25px;
@@ -94,7 +121,6 @@ select {
 }
 
 .start-game:hover {
-    background-color: #45a049;
+    opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 } 
