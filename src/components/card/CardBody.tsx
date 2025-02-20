@@ -4,31 +4,31 @@ export type Category = "friends_fun" | "friends_flirty" | "couples_fun" | "coupl
 
 const cardThemes = {
   friends_fun: {
-    gradient: "from-emerald-600 via-teal-600 to-cyan-600",
+    gradient: "from-yellow-400 via-amber-500 to-orange-500",
     text: "text-white",
-    border: "border-emerald-400/30",
-    glow: "shadow-lg shadow-emerald-500/30",
+    border: "border-yellow-400/50",
+    glow: "shadow-xl shadow-yellow-500/50",
     icon: "🎉"
   },
   friends_flirty: {
-    gradient: "from-pink-600 via-fuchsia-600 to-purple-600",
+    gradient: "from-purple-400 via-fuchsia-500 to-pink-500",
     text: "text-white",
-    border: "border-pink-400/30",
-    glow: "shadow-lg shadow-pink-500/30",
+    border: "border-purple-400/50",
+    glow: "shadow-xl shadow-purple-500/50",
     icon: "💫"
   },
   couples_fun: {
-    gradient: "from-indigo-600 via-violet-600 to-purple-600",
+    gradient: "from-sky-400 via-blue-500 to-indigo-600",
     text: "text-white",
-    border: "border-indigo-400/30",
-    glow: "shadow-lg shadow-indigo-500/30",
+    border: "border-sky-400/50",
+    glow: "shadow-xl shadow-sky-500/50",
     icon: "💝"
   },
   couples_spicy: {
-    gradient: "from-rose-500 via-red-500 to-pink-500",
+    gradient: "from-rose-400 via-red-500 to-pink-600",
     text: "text-white",
-    border: "border-rose-300/40",
-    glow: "shadow-lg shadow-rose-400/40",
+    border: "border-rose-400/50",
+    glow: "shadow-xl shadow-rose-500/50",
     icon: "💋"
   }
 } as const;
