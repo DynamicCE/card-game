@@ -1,61 +1,144 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
+import { Colors } from '../utils/Colors';
+import Header from '../components/Header';
+import Avatar from '../components/Avatar';
+import Card from '../components/Card';
+import Button from '../components/Button';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>;
 
-type CategoryItem = {
+type SettingItem = {
   id: string;
-  name: string;
-  isLocked: boolean;
-  description: string;
+  title: string;
+  icon: string;
+  action: () => void;
 };
 
 const ProfileScreen = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
   
-  // Örnek kategori verisi
-  const [categories, setCategories] = useState<CategoryItem[]>([
-    { id: '1', name: 'Arkadaşlar', isLocked: false, description: 'Arkadaşlarla eğlenceli kartlar' },
-    { id: '2', name: 'Çiftler', isLocked: false, description: 'Çiftler için romantik kartlar' },
-    { id: '3', name: 'Parti', isLocked: false, description: 'Parti zamanı kartları' },
-    { id: '4', name: 'Premium', isLocked: true, description: 'Premium kartlar paketi' },
-  ]);
+  // Kullanıcı istatistikleri
+  const stats = {
+    gamesPlayed: 24,
+    cardsDrawn: 165,
+    timeSpent: '5s 32d', // 5 saat 32 dakika
+  };
+  
+  // Ayarlar menüsü
+  const settings: SettingItem[] = [
+    { 
+      id: 'notifications', 
+      title: 'Bildirimler', 
+      icon: '🔔', 
+      action: () => console.log('Bildirimler') 
+    },
+    { 
+      id: 'theme', 
+      title: 'Tema', 
+      icon: '🎨', 
+      action: () => console.log('Tema') 
+    },
+    { 
+      id: 'language', 
+      title: 'Dil', 
+      icon: '🌐', 
+      action: () => console.log('Dil') 
+    },
+    { 
+      id: 'feedback', 
+      title: 'Geri Bildirim', 
+      icon: '📝', 
+      action: () => console.log('Geri Bildirim') 
+    },
+    { 
+      id: 'privacy', 
+      title: 'Gizlilik Politikası', 
+      icon: '🔒', 
+      action: () => Linking.openURL('https://example.com/privacy') 
+    },
+    { 
+      id: 'terms', 
+      title: 'Kullanım Koşulları', 
+      icon: '📄', 
+      action: () => Linking.openURL('https://example.com/terms') 
+    },
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.backButton}>← Geri</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Profil</Text>
-        <View style={{width: 50}} />
-      </View>
+      <Header 
+        title="Profil"
+        onBackPress={() => navigation.navigate('Home')}
+      />
 
-      <View style={styles.profileInfo}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>DD</Text>
+      <ScrollView 
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.profileInfo}>
+          <Avatar size={100} name="Do Drink" />
+          <Text style={styles.username}>Kullanıcı</Text>
+          <Text style={styles.userEmail}>kullanici@example.com</Text>
+          <Button 
+            title="Profili Düzenle" 
+            type="outline"
+            size="small"
+            onPress={() => {}}
+            style={styles.editButton}
+          />
         </View>
-        <Text style={styles.username}>Kullanıcı</Text>
-      </View>
 
-      <Text style={styles.sectionTitle}>Kategorilerim</Text>
-      
-      <ScrollView style={styles.categoriesList}>
-        {categories.map((category) => (
-          <View key={category.id} style={styles.categoryItem}>
-            <View>
-              <Text style={styles.categoryName}>{category.name}</Text>
-              <Text style={styles.categoryDescription}>{category.description}</Text>
-            </View>
-            <View style={[styles.statusBadge, category.isLocked ? styles.lockedBadge : styles.unlockedBadge]}>
-              <Text style={styles.statusText}>{category.isLocked ? 'Kilitli' : 'Açık'}</Text>
-            </View>
-          </View>
-        ))}
+        <View style={styles.statsContainer}>
+          <Card style={styles.statCard}>
+            <Text style={styles.statValue}>{stats.gamesPlayed}</Text>
+            <Text style={styles.statLabel}>Oyun</Text>
+          </Card>
+          
+          <Card style={styles.statCard}>
+            <Text style={styles.statValue}>{stats.cardsDrawn}</Text>
+            <Text style={styles.statLabel}>Kart</Text>
+          </Card>
+          
+          <Card style={styles.statCard}>
+            <Text style={styles.statValue}>{stats.timeSpent}</Text>
+            <Text style={styles.statLabel}>Süre</Text>
+          </Card>
+        </View>
+
+        <Text style={styles.sectionTitle}>Ayarlar</Text>
+        
+        <View style={styles.settingsList}>
+          {settings.map((setting) => (
+            <TouchableOpacity 
+              key={setting.id} 
+              style={styles.settingItem}
+              onPress={setting.action}
+              activeOpacity={0.7}
+            >
+              <View style={styles.settingContent}>
+                <View style={styles.settingIconContainer}>
+                  <Text style={styles.settingIcon}>{setting.icon}</Text>
+                </View>
+                <Text style={styles.settingTitle}>{setting.title}</Text>
+              </View>
+              <Text style={styles.chevron}>›</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        
+        <Button 
+          title="Çıkış Yap" 
+          type="outline"
+          onPress={() => {}}
+          style={styles.logoutButton}
+        />
+        
+        <Text style={styles.versionText}>Versiyon 1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -64,90 +147,102 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E1E2E',
+    backgroundColor: Colors.background,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    height: 60,
-  },
-  backButton: {
-    fontSize: 18,
-    color: '#FC6C57',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
+  content: {
+    flex: 1,
+    padding: 20,
   },
   profileInfo: {
     alignItems: 'center',
-    marginVertical: 30,
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#FC6C57',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#FFF',
+    marginBottom: 30,
   },
   username: {
-    fontSize: 24,
-    color: '#FFF',
+    fontSize: 22,
+    color: Colors.text,
+    marginTop: 12,
+    fontWeight: 'bold',
+  },
+  userEmail: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    marginTop: 4,
+  },
+  editButton: {
     marginTop: 12,
   },
-  sectionTitle: {
-    fontSize: 18,
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  statCard: {
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    padding: 16,
+  },
+  statValue: {
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFF',
-    marginHorizontal: 16,
-    marginBottom: 12,
+    color: Colors.primary,
   },
-  categoriesList: {
-    paddingHorizontal: 16,
+  statLabel: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    marginTop: 4,
   },
-  categoryItem: {
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.text,
+    marginBottom: 16,
+  },
+  settingsList: {
+    marginBottom: 20,
+  },
+  settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#2A2A3A',
-    borderRadius: 10,
-    padding: 16,
-    marginBottom: 12,
-  },
-  categoryName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
-  },
-  categoryDescription: {
-    fontSize: 14,
-    color: '#AAA',
-    marginTop: 4,
-  },
-  statusBadge: {
+    paddingVertical: 16,
     paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGray,
   },
-  unlockedBadge: {
-    backgroundColor: '#4CAF50',
+  settingContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  lockedBadge: {
-    backgroundColor: '#F44336',
+  settingIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.card,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
-  statusText: {
-    color: '#FFF',
+  settingIcon: {
+    fontSize: 18,
+  },
+  settingTitle: {
+    fontSize: 16,
+    color: Colors.text,
+  },
+  chevron: {
+    fontSize: 22,
+    color: Colors.textSecondary,
+  },
+  logoutButton: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  versionText: {
+    textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    color: Colors.textSecondary,
+    marginBottom: 30,
   },
 });
 
