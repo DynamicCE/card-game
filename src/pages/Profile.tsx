@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Settings, CreditCard, ArrowLeft } from "lucide-react";
+import { User, Settings, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getStorageData, updateSettings, isPurchased } from "@/utils/storage";
-import { categories } from "@/components/Categories";
+import { getStorageData, updateSettings } from "@/utils/storage";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [settings, setSettings] = useState(getStorageData().settings);
-  const purchasedCategories = categories.filter(cat => isPurchased(cat.id));
 
   const toggleSetting = (key: keyof typeof settings) => {
     if (typeof settings[key] === 'boolean') {
@@ -51,31 +49,6 @@ const Profile = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
-                Satın Alınan Paketler
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {purchasedCategories.length > 0 ? (
-                <div className="grid gap-2">
-                  {purchasedCategories.map(category => (
-                    <div key={category.id} className="flex items-center gap-2 p-2 bg-secondary/10 rounded-lg">
-                      {category.icon}
-                      <span>{category.name}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-sm text-gray-400">
-                  Henüz satın alınmış paket bulunmuyor.
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
                 <Settings className="w-5 h-5" />
                 Ayarlar
               </CardTitle>
@@ -88,15 +61,6 @@ const Profile = () => {
                   onClick={() => toggleSetting('soundEffects')}
                 >
                   {settings.soundEffects ? 'Açık' : 'Kapalı'}
-                </Button>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Bildirimler</span>
-                <Button 
-                  variant="outline"
-                  onClick={() => toggleSetting('notifications')}
-                >
-                  {settings.notifications ? 'Açık' : 'Kapalı'}
                 </Button>
               </div>
               <div className="flex justify-between items-center">
