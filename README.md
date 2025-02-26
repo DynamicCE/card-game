@@ -1,1 +1,1 @@
-asdasdsa
+bu repo artık kullanılmıyor.
